@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from '@/views/Login'
 import Home from '@/views/Home'
 import NotFound from '@/views/404'
+import Test from '@/views/test/Test'
 
 Vue.use(Router)
 
@@ -11,17 +12,28 @@ const router = new Router({
     {
       path: '/',
       name: 'Home',
-      component: Home
+      component: Home,
+      meta: {
+        hideMainHeader: false
+      },
     },
     {
       path: '/Login',
       name: 'Login',
-      component: Login
+      component: Login,
+      meta: {
+        hideMainHeader: true
+      },
     },
     {
       path: '/404',
       name: 'NotFound',
       component: NotFound
+    },
+    {
+      path: '/test',
+      name: 'Test',
+      component: Test
     },
   ]
 })

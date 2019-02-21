@@ -18,7 +18,7 @@
 
 <script>
   import 'swiper/dist/css/swiper.css';
-  import { swiper, swiperSlide } from 'vue-awesome-swiper';
+  import { swiper, swiperSlide } from 'vue-awesome-swiper/src';
   export default {
     name: 'banner-swiper',
     data() {

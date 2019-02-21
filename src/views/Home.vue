@@ -71,55 +71,55 @@
     </div>
   </div>
 </template>
-<!--<script type="text/ecmascript-6">-->
-  <!--import pcBanner from 'components/banner';-->
+<script type="text/ecmascript-6">
+  import pcBanner from '@/components/banner';
 
-  <!--export default {-->
-    <!--data() {-->
-      <!--return {-->
-        <!--categoryData: [{-->
-          <!--categoryId: '',-->
-          <!--categoryName: '',-->
-          <!--categoryList: [{-->
-            <!--categoryId: '',-->
-            <!--categoryName: ''-->
-          <!--}]-->
-        <!--}]-->
-      <!--};-->
-    <!--},-->
-    <!--created() {-->
-    <!--},-->
-    <!--activated() {-->
-      <!--this.queryCategoryData((res) => {-->
-        <!--if (res.code === 200) {-->
-          <!--this.categoryData = res.result;-->
-        <!--} else {-->
-          <!--alert('加载主页面失败');-->
-        <!--}-->
-      <!--});-->
-    <!--},-->
-    <!--methods: {-->
-      <!--getImage(index1, index2) {-->
-        <!--return require('../../assets/image/floor/floor' + (index1 + 1) + '-' + (index2 + 1) + '.jpg');-->
-      <!--},-->
-      <!--goGoodsListPage(categoryId, keyword) {-->
-        <!--let param = {};-->
-        <!--param.categoryId = categoryId;-->
-        <!--param.keyword = keyword;-->
-        <!--this.loadPage('goods-list', param);-->
-      <!--},-->
-      <!--queryCategoryData(resolve) {-->
-        <!--this.ajax({-->
-          <!--type: 'GET',-->
-          <!--url: `/uac/auth/category/getProductCategoryDtoByPid/0`,-->
-          <!--success: resolve-->
-        <!--});-->
-      <!--}-->
-    <!--},-->
-    <!--components: {-->
-      <!--pcBanner-->
-    <!--}-->
-  <!--};-->
-<!--</script>-->
-<!--<style rel="stylesheet/scss" lang="scss">-->
-<!--</style>-->
+  export default {
+    // data() {
+    //   return {
+    //     categoryData: [{
+    //       categoryId: '',
+    //       categoryName: '',
+    //       categoryList: [{
+    //         categoryId: '',
+    //         categoryName: ''
+    //       }]
+    //     }]
+    //   };
+    // },
+    // created() {
+    // },
+    // activated() {
+    //   this.queryCategoryData((res) => {
+    //     if (res.code === 200) {
+    //       this.categoryData = res.result;
+    //     } else {
+    //       alert('加载主页面失败');
+    //     }
+    //   });
+    // },
+    // methods: {
+    //   getImage(index1, index2) {
+    //     return require('../../assets/image/floor/floor' + (index1 + 1) + '-' + (index2 + 1) + '.jpg');
+    //   },
+    //   goGoodsListPage(categoryId, keyword) {
+    //     let param = {};
+    //     param.categoryId = categoryId;
+    //     param.keyword = keyword;
+    //     this.loadPage('goods-list', param);
+    //   },
+    //   queryCategoryData(resolve) {
+    //     this.ajax({
+    //       type: 'GET',
+    //       url: `/uac/auth/category/getProductCategoryDtoByPid/0`,
+    //       success: resolve
+    //     });
+    //   }
+    // },
+    components: {
+      pcBanner
+    }
+  };
+</script>
+<style rel="stylesheet/scss" lang="scss">
+</style>
