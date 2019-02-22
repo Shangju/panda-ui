@@ -4,6 +4,8 @@ import Login from '@/views/Login'
 import Home from '@/views/Home'
 import NotFound from '@/views/404'
 import Test from '@/views/test/Test'
+import Register from '@/views/login/register'
+import Khome from '@/views/kitty/home'
 
 Vue.use(Router)
 
@@ -31,9 +33,22 @@ const router = new Router({
       component: NotFound
     },
     {
+      path: '/register',
+      name: 'Register',
+      component: Register,
+      meta: {
+        hideMainHeader: true
+      },
+    },
+    {
       path: '/test',
       name: 'Test',
       component: Test
+    },
+    {
+      path: '/kitty/home',
+      name: 'Khome',
+      component: Khome
     },
   ]
 })

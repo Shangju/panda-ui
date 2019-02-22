@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <pc-header v-show='routerShow'></pc-header>
+    <!--<pc-header v-show='routerShow'></pc-header>-->
     <!--v-cloak 这个指令是防止页面加载时出现 vuejs 的变量名-->
     <router-view v-cloak></router-view>
-    <pc-footer></pc-footer>
+    <!--<pc-footer></pc-footer>-->
   </div>
 </template>
 
