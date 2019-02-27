@@ -2,6 +2,7 @@
   <div>
     <pc-nav></pc-nav>
     <div class="header">
+      <!--<a class="logo" href="javascript:void(0)" @click="loadPage('Test')" style="width:200px; margin:0 auto;">欢迎来到熊猫海外代购</a>-->
       <div class="w">
         <a class="logo" href="javascript:void(0)" @click.prevent="goHome">PCMall</a>
         <div class="search-con">
@@ -16,28 +17,28 @@
   import pcNav from '@/components/layout/nav';
 
   export default {
-    data() {
-      return {
-        searchInfo: ''
-      };
-    },
+    // data() {
+    //   return {
+    //     searchInfo: ''
+    //   };
+    // },
     components: {
       pcNav
-    },
-    methods: {
-      goGoodsListPage(keyword) {
-        let param = {};
-        param.keyword = keyword;
-        console.info(this.$route);
-        if (this.$route.name === 'goods-list') {
-          console.info('emit searchProduct');
-          this.loadPage('goods-list', param);
-          this.$pcBus.$emit('searchProduct');
-        } else {
-          this.loadPage('goods-list', param);
-        }
-      }
     }
+    // methods: {
+    //   goGoodsListPage(keyword) {
+    //     let param = {};
+    //     param.keyword = keyword;
+    //     console.info(this.$route);
+    //     if (this.$route.name === 'goods-list') {
+    //       console.info('emit searchProduct');
+    //       this.loadPage('goods-list', param);
+    //       this.$pcBus.$emit('searchProduct');
+    //     } else {
+    //       this.loadPage('goods-list', param);
+    //     }
+    //   }
+    // }
   };
 </script>
 <style rel="stylesheet/scss" lang="scss">

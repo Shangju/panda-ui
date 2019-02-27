@@ -10,6 +10,21 @@
     <el-form-item prop="phone">
       <el-input type="text"  auto-complete="off" placeholder="请输入手机号码"></el-input>
     </el-form-item>
+    <el-form-item >
+      <el-col :span="12">
+        <el-form-item prop="captcha">
+          <el-input type="test" v-model="loginForm.captcha" auto-complete="off" placeholder="验证码, 单击图片刷新"
+                    style="width: 100%;">
+          </el-input>
+        </el-form-item>
+      </el-col>
+      <el-col class="line" :span="1">&nbsp;</el-col>
+      <el-col :span="11">
+        <el-form-item>
+          <img style="width: 100%;" class="pointer" :src="loginForm.src" @click="refreshCaptcha">
+        </el-form-item>
+      </el-col>
+    </el-form-item>
     <!--<el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox>-->
     <el-form-item style="width:100%;">
       <el-button type="primary" style="width:40%; margin-left:200px" @click.native.prevent="reset">注册</el-button>
@@ -20,7 +35,7 @@
 
 <script>
   import Cookies from "js-cookie";
-  import mock from '@/mock/index.js'
+  // import mock from '@/mock/index.js'
   export default {
     name: 'Login',
     data() {

@@ -3,11 +3,13 @@ let mixin = {
     return {};
   },
   methods: {
+    // 此方法获取url后面的值
     getUrlParam(name) {
       let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)');
       let result = window.location.search.substr(1).match(reg);
       return result ? decodeURIComponent(result[2]) : null;
     },
+    // 此方法用来跳转页面
     loadPage(routerName, param) {
       if (param) {
         this.$router.push({name: routerName, query: param});
@@ -24,8 +26,9 @@ let mixin = {
     goBack() {
       this.$router.go(-1);
     },
+    //回到主页
     goHome() {
-      this.loadPage('Index');
+      this.loadPage('Test');
     },
     goSignIn() {
       if (process.env.NODE_ENV === 'production') {

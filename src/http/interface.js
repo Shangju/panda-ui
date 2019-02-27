@@ -8,7 +8,7 @@ import axios from './axios'
 // 单独导出
 export const login = data => {
   return axios({
-    url: '/login',
+    url: 'sys/login',
     method: 'post',
     data
   })

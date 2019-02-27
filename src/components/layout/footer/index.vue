@@ -8,7 +8,7 @@
         <a class="link" href="https://www.zhihu.com" target="_blank">知乎</a>
       </div>
       <p class="copyright">
-        Copyright © 2019 重庆邮电大学 1377283637@qq.com  All Right Reserved
+        Copyright © 2019 重庆邮电大学 梁尚举 1377283637@qq.com  All Right Reserved
       </p>
     </div>
   </div>

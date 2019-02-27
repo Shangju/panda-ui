@@ -6,6 +6,16 @@ import NotFound from '@/views/404'
 import Test from '@/views/test/Test'
 import Register from '@/views/login/register'
 import Khome from '@/views/kitty/home'
+import Demo from '@/views/test/demo'
+import goodsList from '@/views/goods/goods-list'
+import userCart from '@/views/user/user-cart'
+import orderConfirm from '@/views/order/confirm'
+import orderPayment from '@/views/order/payment'
+import goodsDetail from '@/views/goods/goods-detail'
+import orderDetail from '@/views/order/detail'
+import userCenter from '@/views/user/user-center'
+import about from '@/views/about'
+import userOrder from '@/views/user/user-order'
 
 Vue.use(Router)
 
@@ -49,7 +59,90 @@ const router = new Router({
       path: '/kitty/home',
       name: 'Khome',
       component: Khome
-    },
+    },{
+      path: '/demo',
+      name: 'Demo',
+      component: Demo
+    },{
+      path: '/goodsList',
+      name: 'goodsList',
+      component: goodsList,
+      meta: {
+        name: '商品列表',
+        requestAuth: false,
+        hideMainHeader: false
+      }
+    },{
+      path: '/userCart',
+      name: 'userCart',
+      component: userCart,
+      meta: {
+        name: '我的购物车',
+        requestAuth: false,
+        hideMainHeader: false
+      }
+    },{
+      path: '/orderConfirm',
+      name: 'orderConfirm',
+      component: orderConfirm,
+      meta: {
+        name: '订单确认',
+        requestAuth: true,
+        hideMainHeader: false
+      }
+    },{
+      path: '/orderPayment',
+      name: 'orderPayment',
+      component: orderPayment,
+      meta: {
+        name: '支付订单',
+        requestAuth: true,
+        hideMainHeader: false
+      }
+    },{
+      path: '/goodsDetail',
+      name: 'goodsDetail',
+      component: goodsDetail,
+      meta: {
+        name: '商品详情',
+        requestAuth: false,
+        hideMainHeader: false
+      }
+    },{
+      path: '/orderDetail',
+      name: 'orderDetail',
+      component: orderDetail,
+      meta: {
+        name: '订单详情',
+        requestAuth: true,
+        hideMainHeader: false
+      }
+    }, {
+      path: '/userCenter',
+      name: 'userCenter',
+      component: userCenter,
+      meta: {
+        name: '个人中心',
+        requestAuth: true,
+        hideMainHeader: false
+      }
+    },{
+      path: '/about',
+      name: 'about',
+      component: about,
+      meta: {
+        name: '关于熊猫海外代购',
+        hideMainHeader: false
+      }
+    },{
+      path: '/userOrder',
+      name: 'userOrder',
+      component: userOrder,
+      meta: {
+        name: '我的订单',
+        hideMainHeader: false
+      }
+    }
   ]
 })
 
