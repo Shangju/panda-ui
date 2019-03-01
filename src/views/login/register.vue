@@ -1,14 +1,14 @@
 <template>
   <el-form :model="loginForm" :rules="fieldRules" ref="loginForm" label-position="left" label-width="0px" class="demo-ruleForm login-container">
     <h3 class="title">用户注册</h3>
-    <el-form-item prop="account">
-      <el-input type="text"  auto-complete="off" placeholder="请输入用户名"></el-input>
+    <el-form-item prop="name">
+      <el-input type="text"  v-model="loginForm.name" auto-complete="off" placeholder="请输入用户名"></el-input>
     </el-form-item>
     <el-form-item prop="password">
-      <el-input type="password"  auto-complete="off" placeholder="请输入密码"></el-input>
+      <el-input type="password" v-model="loginForm.password"  auto-complete="off" placeholder="请输入密码"></el-input>
     </el-form-item>
-    <el-form-item prop="phone">
-      <el-input type="text"  auto-complete="off" placeholder="请输入手机号码"></el-input>
+    <el-form-item prop="mobile">
+      <el-input type="text" v-model="loginForm.mobile" auto-complete="off" placeholder="请输入手机号码"></el-input>
     </el-form-item>
     <el-form-item >
       <el-col :span="12">
@@ -35,40 +35,59 @@
 
 <script>
   import Cookies from "js-cookie";
-  // import mock from '@/mock/index.js'
+  import axios from 'axios';
   export default {
     name: 'Login',
     data() {
       return {
         logining: false,
         loginForm: {
-          account: '',
-          password: ''
+          name: '',
+          password: '',
+          mobile:'',
+          captcha:'',
+          src:this.global.baseUrl + "/captcha.jpg"
         },
         fieldRules: {
-          account: [
+          name: [
             { required: true, message: '请输入账号', trigger: 'blur' },
           ],
           password: [
             { required: true, message: '请输入密码', trigger: 'blur' },
-          ]
+          ],
+          mobile: [
+            { required: true, message: '请输入手机号', trigger: 'blur' },
+          ],
+          captcha: [
+            { required: true, message: '请输入验证码', trigger: 'blur' },
+          ],
         },
         checked: true
       };
     },
     methods: {
-      login() {
-        let userInfo = {account:this.loginForm.account, password:this.loginForm.password}
-        this.$api.login(JSON.stringify(userInfo)).then((res) => {
-          Cookies.set('token', res.data.token) // 放置token到Cookie
-          sessionStorage.setItem('user', userInfo.account) // 保存用户到本地会话
-          this.$router.push('/')  // 登录成功，跳转到主页
-        }).catch(function(res) {
-          alert(res);
-        });
+      refreshCaptcha: function(){
+        this.loginForm.src = this.global.baseUrl + "/captcha.jpg?t=" + new Date().getTime();
       },
       reset() {
-        this.$router.push('/')  // 注册成功，跳转到主界面
+        let userInfo = {name:this.loginForm.name, password:this.loginForm.password,mobile:this.loginForm.mobile,captcha:this.loginForm.captcha}
+        let self = this; // 定义一个变量指向vue实例
+        axios.post(this.global.baseUrl+'/sys/register',userInfo).then(function (res) {
+          // alert(JSON.stringify(res.data));
+          // alert(JSON.stringify(res.data));
+          if(res.data.msg != "注册成功"){
+            alert(res.data.msg);
+          }else {
+            // alert(res.data.data.token);
+            // Cookies.set('token', res.data.data.token); // 放置token到Cookie
+            // sessionStorage.setItem('user', userInfo.name); // 保存用户到本地会话
+            alert("注册成功");
+            self.$router.push('/test'); // 注册成功，跳转到主页
+          }
+        }).catch(function (res) {
+          alert("错误操作");
+        });
+        // this.$router.push('/')  // 注册成功，跳转到主界面
       }
     }
   }

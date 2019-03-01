@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
-import user from './user/';
-import cart from './cart/';
+// import user from './user/';
+// import cart from './cart/';
 Vue.use(Vuex);
 
 Vue.prototype.$http = axios.create({
@@ -11,7 +11,7 @@ Vue.prototype.$http = axios.create({
 
 export default new Vuex.Store({
   modules: {
-    user,
+    // user,
     cart
   }
 });

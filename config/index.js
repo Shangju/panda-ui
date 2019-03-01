@@ -11,13 +11,13 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/panda':{
-        target:'http://localhost:8088',
-        changeOrigin:true,
-        pathRewrite:{
-          '^/panda':'/'
-        }
-      }
+      // '/panda':{
+      //   target:'http://localhost:8088',
+      //   changeOrigin:true,
+      //   pathRewrite:{
+      //     '^/panda':'/'
+      //   }
+      // }
     },
 
     // Various Dev Server settings

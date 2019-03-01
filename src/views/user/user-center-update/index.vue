@@ -23,8 +23,8 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import pcNavSide from 'components/layout/nav-side';
-  import pcUserUpdate from 'components/user/user-update';
+  import pcNavSide from '@/components/layout/nav-side';
+  import pcUserUpdate from '@/components/user/user-update';
 
   export default {
     data() {

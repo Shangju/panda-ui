@@ -24,7 +24,7 @@
     </el-form-item>
      <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox>
     <el-form-item style="width:100%;">
-      <el-button type="primary" style="width:40%;" @click.native.prevent="reset">注册</el-button>
+      <el-button type="primary" style="width:40%;" @click.native.prevent="register">注册</el-button>
       <el-button type="primary" style="width:40%;" @click.native.prevent="login" :loading="logining">登 录</el-button>
     </el-form-item>
   </el-form>
@@ -32,17 +32,16 @@
 
 <script>
   import Cookies from "js-cookie";
-  // import $axios from "../http/axios";
   import axios from 'axios';
-  // import mock from '@/mock/index.js'
+
   export default {
     name: 'Login',
     data() {
       return {
         logining: false,
         loginForm: {
-          username: '',
-          password: '',
+          username: 'string',
+          password: 'string',
           captcha:'',
           src:this.global.baseUrl + "/captcha.jpg"
         },
@@ -63,27 +62,22 @@
     methods: {
       login() {
         let userInfo = {username:this.loginForm.username, password:this.loginForm.password,captcha:this.loginForm.captcha}
-        // this.$api.login(JSON.stringify(userInfo)).then((res) => {
-        //   Cookies.set('token', res.data.token) // 放置token到Cookie
-        //   sessionStorage.setItem('user', userInfo.username) // 保存用户到本地会话
-        //   this.$router.push('/')  // 登录成功，跳转到主页
-        // }).catch(function(res) {
-        //   alert(res);
-        // });
-
         let self = this; // 定义一个变量指向vue实例
-        axios.post(this.global.baseUrl+'/sys/login',userInfo)
-          .then(function (res) {
-            alert(JSON.stringify(res.data));
-            Cookies.set('token', res.data.token) // 放置token到Cookie
-            sessionStorage.setItem('user', userInfo.username) // 保存用户到本地会话
-            self.$router.push('/')  // 登录成功，跳转到主页
+        axios.post(this.global.baseUrl+'/sys/login',userInfo).then(function (res) {
+            // alert(JSON.stringify(res.data));
+          if(res.data.msg != null){
+            alert(res.data.msg);
+          }else {
+            // alert(res.data.data.token);
+            Cookies.set('token', res.data.data.token); // 放置token到Cookie
+            sessionStorage.setItem('user', userInfo.username); // 保存用户到本地会话
+            self.$router.push('/test'); // 登录成功，跳转到主页
+            }
           }).catch(function (res) {
           alert(res);
         });
-
       },
-      reset() {
+      register() {
         this.$router.push('/register')  // 跳转到注册页面
       },
       refreshCaptcha: function(){

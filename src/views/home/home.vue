@@ -56,70 +56,153 @@
         <!--<div class="loading"></div>-->
       </div>
     </div>
-    <div class="w">
-      <div class="floor-wrap" v-for="(category, index1) in  categoryData" :key="category.categoryId">
-        <h1 class="floor-title">F{{index1 + 1}} {{category.categoryName}}</h1>
-        <ul class="floor-list">
-          <li class="floor-item" v-for="(item, index2) in  category.categoryList" :key="item.categoryId">
-            <a href="javascript:void(0)" @click="goGoodsListPage(item.categoryId)">
-              <span class="floor-text">{{item.categoryName}}</span>
-              <img class="floor-img" :src="getImage(index1, index2)" alt="双开门冰箱"/>
-            </a>
-          </li>
-        </ul>
-      </div>
+  <div class="w">
+    <div class="floor-wrap" v-for="(category, index1) in  categoryData" :key="category.categoryId">
+      <h1 class="floor-title">F{{index1 + 1}} {{category.categoryName}}</h1>
+      <ul class="floor-list">
+        <li class="floor-item" v-for="(item, index2) in  category.categoryList" :key="item.categoryId">
+          <a href="javascript:void(0)" @click="goGoodsListPage(item.categoryId)">
+            <span class="floor-text">{{item.categoryName}}</span>
+            <img class="floor-img" :src="getImage(index1, index2)" alt="双开门冰箱"/>
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
+  </div>
 </template>
-<script type="text/ecmascript-6">
+
+<script>
   import pcBanner from '@/components/banner';
 
   export default {
-    // data() {
-    //   return {
-    //     categoryData: [{
-    //       categoryId: '',
-    //       categoryName: '',
-    //       categoryList: [{
-    //         categoryId: '',
-    //         categoryName: ''
-    //       }]
-    //     }]
-    //   };
-    // },
-    // created() {
-    // },
-    // activated() {
-    //   this.queryCategoryData((res) => {
-    //     if (res.code === 200) {
-    //       this.categoryData = res.result;
-    //     } else {
-    //       alert('加载主页面失败');
-    //     }
-    //   });
-    // },
-    // methods: {
-    //   getImage(index1, index2) {
-    //     return require('../../assets/image/floor/floor' + (index1 + 1) + '-' + (index2 + 1) + '.jpg');
-    //   },
-    //   goGoodsListPage(categoryId, keyword) {
-    //     let param = {};
-    //     param.categoryId = categoryId;
-    //     param.keyword = keyword;
-    //     this.loadPage('goods-list', param);
-    //   },
-    //   queryCategoryData(resolve) {
-    //     this.ajax({
-    //       type: 'GET',
-    //       url: `/uac/auth/category/getProductCategoryDtoByPid/0`,
-    //       success: resolve
-    //     });
-    //   }
-    // },
+    data() {
+      return {
+        categoryData: [
+          {
+          categoryId: '1',
+          categoryName: '家用电器',
+          categoryList: [
+            {
+            categoryId: 1,
+            categoryName: '冰箱'
+          },{
+              categoryId: 2,
+              categoryName: '电视'
+            },{
+              categoryId: 3,
+              categoryName: '洗衣机'
+            },{
+              categoryId: 4,
+              categoryName: '空调'
+            },{
+              categoryId: 5,
+              categoryName: '电热水器'
+            }
+          ]
+        },{
+            categoryId: '2',
+            categoryName: '数码3C',
+            categoryList: [
+              {
+                categoryId: 1,
+                categoryName: '电脑'
+              },{
+                categoryId: 2,
+                categoryName: '手机'
+              },{
+                categoryId: 3,
+                categoryName: '平板电脑'
+              },{
+                categoryId: 4,
+                categoryName: '数码相机'
+              },{
+                categoryId: 5,
+                categoryName: '3C配件'
+              }
+            ]
+          },{
+            categoryId: '3',
+            categoryName: '服装箱包',
+            categoryList: [
+              {
+                categoryId: 1,
+                categoryName: '女装'
+              },{
+                categoryId: 2,
+                categoryName: '帽子'
+              },{
+                categoryId: 3,
+                categoryName: '旅行箱'
+              },{
+                categoryId: 4,
+                categoryName: '手提包'
+              },{
+                categoryId: 5,
+                categoryName: '保暖内衣'
+              }
+            ]
+          },{
+            categoryId: '4',
+            categoryName: '食品生鲜',
+            categoryList: [
+              {
+                categoryId: 1,
+                categoryName: '零食'
+              },{
+                categoryId: 2,
+                categoryName: '生鲜'
+              },{
+                categoryId: 3,
+                categoryName: '半成品菜'
+              },{
+                categoryId: 4,
+                categoryName: '速冻食品'
+              },{
+                categoryId: 5,
+                categoryName: '进口食品'
+              }
+            ]
+          },{
+            categoryId: '5',
+            categoryName: '酒水饮料',
+            categoryList: [
+              {
+                categoryId: 1,
+                categoryName: '白酒'
+              },{
+                categoryId: 2,
+                categoryName: '红酒'
+              },{
+                categoryId: 3,
+                categoryName: '饮料'
+              },{
+                categoryId: 4,
+                categoryName: '鸡尾酒'
+              },{
+                categoryId: 5,
+                categoryName: '进口洋酒'
+              }
+            ]
+          }
+        ],
+      };
+    },
+    methods: {
+      getImage(index1, index2) {
+        return require('../../assets/image/floor/floor' + (index1 + 1) + '-' + (index2 + 1) + '.jpg');
+      },
+      goGoodsListPage(categoryId, keyword) {
+        let param = {};
+        param.categoryId = categoryId;
+        param.keyword = keyword;
+        this.loadPage('goodsList', param);
+      }
+    },
     components: {
       pcBanner
     }
-  };
+  }
+
 </script>
-<style rel="stylesheet/scss" lang="scss">
-</style>
+

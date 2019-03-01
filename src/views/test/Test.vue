@@ -75,8 +75,6 @@
 <script>
   import pcBanner from '@/components/banner';
 
-  import axios from 'axios'
-
   export default {
     data() {
       return {

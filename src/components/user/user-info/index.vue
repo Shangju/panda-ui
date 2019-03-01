@@ -16,7 +16,7 @@
       <span class="label">邮 箱：</span>
       <span class="text">{{userForm.email}}</span>
     </div>
-    <a class="btn btn-submit" @click="loadPage('user-center-update')">编辑</a>
+    <a class="btn btn-submit" @click="loadPage('userCenterUpdate')">编辑</a>
   </div>
 </template>
 <script type="text/ecmascript-6">

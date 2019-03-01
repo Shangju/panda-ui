@@ -22,7 +22,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import {gbs} from '../../../util/settings';
+  // import {gbs} from '../../../util/settings';
   export default {
     data() {
       return {

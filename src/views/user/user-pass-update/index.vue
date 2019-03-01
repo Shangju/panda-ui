@@ -37,7 +37,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import pcNavSide from 'components/layout/nav-side';
+  import pcNavSide from '@/components/layout/nav-side';
 
   export default {
     data() {
