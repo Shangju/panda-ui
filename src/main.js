@@ -13,7 +13,8 @@ import VueLazyload from 'vue-lazyload';
 import Mixin from './mixins';
 import 'font-awesome/css/font-awesome.css';
 import Bus from '@/vueBus';
-// import store from './store';
+import Vuex from 'vuex'
+import store from './store';
 // import 'font-awesome/css/font-awesome.css';
 
 
@@ -21,6 +22,7 @@ import Bus from '@/vueBus';
 Vue.use(ElementUI);
 Vue.use(api);
 Vue.use(VueRouter);
+Vue.use(Vuex);
 Vue.use(VueLazyload, {
   loading: 'static/loading-svg/loading-spinning-bubbles.svg',
   try: 3 // default 1
@@ -38,7 +40,7 @@ axios.defaults.withCredentials = true; //意思是携带cookie信息,保持sessi
 new Vue({
   el: '#app',
   router,
-  // store,
+  store,
   components: { App },
   template: '<App/>'
 })

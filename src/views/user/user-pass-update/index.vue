@@ -18,17 +18,17 @@
             <div class="user-info">
               <div class="form-line">
                 <span class="label">原密码：</span>
-                <input type="password" class="input" id="password" autocomplete="off"/>
+                <input type="password" class="input" v-model="passwordOld" name="passwordOld" autocomplete="off"/>
               </div>
               <div class="form-line">
                 <span class="label">新密码：</span>
-                <input type="password" class="input" id="password-new" autocomplete="off"/>
+                <input type="password" class="input" v-model="passwordNew" autocomplete="off"/>
               </div>
               <div class="form-line">
                 <span class="label">确认密码：</span>
-                <input type="password" class="input" id="password-confirm" autocomplete="off"/>
+                <input type="password" class="input" v-model="passwordConfirm" autocomplete="off"/>
               </div>
-              <span class="btn btn-submit">提交</span>
+              <span class="btn btn-submit"  @click="updatePassword()">提交</span>
             </div>
           </div>
         </div>
@@ -38,15 +38,38 @@
 </template>
 <script type="text/ecmascript-6">
   import pcNavSide from '@/components/layout/nav-side';
+  import Cookies from 'js-cookie'
 
   export default {
     data() {
-      return {};
+      return {
+        passwordOld:'',
+        passwordNew:'',
+        passwordConfirm:'',
+      };
     },
     created() {
     },
     methods: {
-      test() {
+      updatePassword(){
+        let password = {
+          passwordOld: this.passwordOld,
+          passwordNew: this.passwordNew,
+          passwordConfirm: this.passwordConfirm
+        };
+        let self = this; // 定义一个变量指向vue实例
+        this.$axios.post(
+          this.global.baseUrl + '/updatePassword',
+          password
+        ).then((res) => {
+          alert(res.data.msg);
+          if(res.data.msg == "密码修改成功，请重新登录。"){
+            Cookies.remove("token");
+            self.$router.push('/test'); // 登录成功，跳转到主页
+          }
+        }).catch(function (res) {
+          alert(res);
+        })
       }
     },
     components: {

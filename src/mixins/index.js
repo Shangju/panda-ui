@@ -66,23 +66,23 @@ let mixin = {
         console.error(error);
       });
     },
-    logout() {
-      this.$http({
-        url: '/uac/user/logout',
-        method: 'post',
-        params: {
-          accessToken: this.$store.getters.getAccessToken
-        }
-      }).then(() => {
-        this.$store.dispatch('delete_user_info');
-        this.$store.dispatch('clear_cart');
-        this.goHome();
-      }).catch(() => {
-        this.$store.dispatch('delete_user_info');
-        this.$store.dispatch('clear_cart');
-        this.goHome();
-      });
-    },
+    // logout() {
+    //   this.$http({
+    //     url: '/uac/user/logout',
+    //     method: 'post',
+    //     params: {
+    //       accessToken: this.$store.getters.getAccessToken
+    //     }
+    //   }).then(() => {
+    //     this.$store.dispatch('delete_user_info');
+    //     this.$store.dispatch('clear_cart');
+    //     this.goHome();
+    //   }).catch(() => {
+    //     this.$store.dispatch('delete_user_info');
+    //     this.$store.dispatch('clear_cart');
+    //     this.goHome();
+    //   });
+    // },
     // 字段的验证，支持非空、手机、邮箱的判断
     validate(value, type) {
       // 非空验证

@@ -1,22 +1,25 @@
 <template>
   <div class="user-info">
-    <el-form :label-position="labelPosition" label-width="60px" :model="updateUserForm">
+    <el-form :label-position="labelPosition" label-width="100px" :model="updateUserForm">
+      <el-form-item label="用户编号">
+        <el-input v-model="updateUserForm.customerId" class="form-line-input" :disabled="true"/>
+      </el-form-item>
       <el-form-item label="登录名">
-        <el-input v-model="updateUserForm.loginName" class="form-line-input" :disabled="true"/>
+        <el-input v-model="updateUserForm.admin" class="form-line-input" :disabled="true"/>
       </el-form-item>
-      <el-form-item label="手机号">
-        <el-input v-model="updateUserForm.mobileNo" class="form-line-input" :disabled="true"/>
+      <el-form-item label="真实姓名">
+        <el-input v-model="updateUserForm.customerName" class="form-line-input"/>
       </el-form-item>
-      <el-form-item label="用户名">
-        <el-input v-model="updateUserForm.userName" class="form-line-input"/>
+      <el-form-item label="身份证号">
+        <el-input v-model="updateUserForm.customerNumber" class="form-line-input"/>
       </el-form-item>
-      <el-form-item label="邮箱">
-        <el-input v-model="updateUserForm.email" class="form-line-input"/>
-        <el-button :plain="true" type="danger" @click="getEmailCode">获取验证码</el-button>
+      <el-form-item label="手机号码">
+        <el-input v-model="updateUserForm.customerPhone" class="form-line-input"/>
       </el-form-item>
-      <el-form-item label="验证码">
-        <el-input v-model="updateUserForm.emailCode" class="form-line-input"/>
+      <el-form-item label="收货地址">
+        <el-input v-model="updateUserForm.customerAddress" class="form-line-input"/>
       </el-form-item>
+
     </el-form>
     <a class="btn btn-submit" @click="updateUserInfo">保存</a>
   </div>
@@ -29,86 +32,63 @@
         errMsg: '',
         labelPosition: 'right',
         updateUserForm: {
-          userName: '',
-          mobileNo: '',
-          email: '',
-          emailCode: ''
+          customerId: '',
+          admin:'',
+          customerName: '',
+          customerNumber: '',
+          customerPhone: '',
+          customerAddress:''
         }
       };
     },
     created() {
-      this.queryUserInfo();
+      this.UserInfo();
     },
     methods: {
-      getEmailCode() {
-        let email = this.updateUserForm.email;
-        let keyStr = gbs.secret.key_str;
-        let ivStr = gbs.secret.iv_str;
-        email = this.$pcEncrypt.aesEncrypt(email, keyStr, ivStr);
-        this.ajax({
-          url: `/uac/email/sendRestEmailCode`,
-          isUnMusk: true,
-          data: {
-            email: email
-          },
-          success: (res) => {
-            if (res && res.code === 200) {
-              console.info('发送验证码成功');
-            }
-          }
-        });
-      },
       updateUserInfo() {
-        let _this = this;
-        if (!this.validate(this.updateUserForm.email, 'require')) {
-          alert('请填写邮箱地址');
-          return;
-        }
-        if (!this.validate(this.updateUserForm.email, 'email')) {
-          alert('邮箱格式不正确');
-          return;
-        }
-
-        let email = this.updateUserForm.email;
-        if (!email) {
-          alert('邮箱地址不能为空');
-          return;
-        }
-        let keyStr = gbs.secret.key_str;
-        let ivStr = gbs.secret.iv_str;
-        email = this.$pcEncrypt.aesEncrypt(email, keyStr, ivStr);
-        this.ajax({
-          url: `/uac/email/checkRestEmailCode`,
-          isUnMusk: true,
-          data: {
-            email: email,
-            emailCode: _this.updateUserForm.emailCode
-          },
-          success: (res) => {
-            if (res.code === 200) {
-              _this.ajax({
-                url: `/uac/user/updateInformation`,
-                isUnMusk: true,
-                data: {
-                  email: _this.updateUserForm
-                },
-                success: () => {
-                  alert('操作成功');
-                }
-              });
+        let userInfo = {
+          customerId: this.updateUserForm.customerId, adminName: this.updateUserForm.admin,
+          customerName: this.updateUserForm.customerName, customerNumber: this.updateUserForm.customerNumber,
+          customerPhone: this.updateUserForm.customerPhone, customerAddress: this.updateUserForm.customerAddress
+        };
+        this.$axios.post(
+          this.global.baseUrl + '/updateUserInfo',
+          userInfo
+        ).then((res) => {
+          // alert(JSON.stringify(res.data));
+            this.updateUserForm.customerId = res.data.data.customerId;
+            this.updateUserForm.admin = res.data.data.adminName;
+            this.updateUserForm.customerName = res.data.data.customerName;
+            this.updateUserForm.customerNumber = res.data.data.customerNumber;
+            this.updateUserForm.customerPhone = res.data.data.customerPhone;
+            this.updateUserForm.customerAddress = res.data.data.customerAddress;
+            if(res.data.code == 200) {
+              alert("资料更新成功");
             }
-          }
-        });
+        }).catch(function (res) {
+          alert(res);
+        })
       },
-      queryUserInfo() {
-        this.ajax({
-          url: `/uac/user/getInformation`,
-          success: (res) => {
-            if (res.code === 200) {
-              this.updateUserForm = res.result;
-            }
+      UserInfo() {
+        this.$axios.post(
+          this.global.baseUrl + '/getUserInfo'
+        ).then((res) => {
+          // alert(JSON.stringify(res.data));
+          if (res.data.msg != null) {
+            this.updateUserForm.customerId = res.data.data.userId;
+            this.updateUserForm.admin = res.data.data.name;
+            this.updateUserForm.customerPhone = res.data.data.mobile;
+          }else {
+            this.updateUserForm.customerId = res.data.data.customerId;
+            this.updateUserForm.admin = res.data.data.adminName;
+            this.updateUserForm.customerName = res.data.data.customerName;
+            this.updateUserForm.customerNumber = res.data.data.customerNumber;
+            this.updateUserForm.customerPhone = res.data.data.customerPhone;
+            this.updateUserForm.customerAddress = res.data.data.customerAddress;
           }
-        });
+        }).catch(function (res) {
+          alert(res);
+        })
       }
     },
     components: {}

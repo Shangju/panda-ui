@@ -13,7 +13,8 @@
       <div class="panel">
         <h1 class="panel-title">关于我们</h1>
         <div class="panel-body">
-          欢迎访问PCMALL。这是一个开源项目,技术站主要是Vue全家桶+Vuex由于平时工作较忙,目前仍处于研发中,有建议请联系paascloud.net@gmail.com.
+          欢迎访问熊猫海外代购，希望您购物愉快！！！
+          这是一个springboot+vue做的网上购物网站。
         </div>
       </div>
     </div>

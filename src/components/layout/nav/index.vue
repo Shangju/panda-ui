@@ -2,10 +2,17 @@
   <div class="nav">
     <div class="w">
       <div class="user-info">
-                <span class="user not-login" v-show="xianshi">
-                    <span class="link js-login" @click="loadPage('Login')">登录</span>
+                <span class="user not-login" v-show="isNotActive">
+                    <span class="link js-login" @click="loadPage('login')">登录</span>
                     <span class="link js-register" @click="loadPage('Register')">注册</span>
                 </span>
+        <span class="user login" v-show="isActive">
+        <span class="link-text">
+        欢迎，
+        <span class="username">{{userName}}</span>
+        </span>
+        <span class="link js-logout" @click.prevent="logout">退出</span>
+        </span>
         <ul class="nav-list">
           <!--<li class="nav-item">-->
           <!--<a class="link" @click="loadPage('user-cart')">-->
@@ -26,14 +33,6 @@
             <a class="link" href="javascript:void(0)" @click.preventk="loadPage('about')">关于PCMall</a>
           </li>
         </ul>
-
-        <!--<span class="user login" v-show="loginName != null && loginName !== ''">-->
-                    <!--<span class="link-text">-->
-                        <!--欢迎，-->
-                        <!--<span class="username">{{loginName}}</span>-->
-                    <!--</span>-->
-                    <!--<span class="link js-logout" @click.prevent="logout">退出</span>-->
-                <!--</span>-->
       </div>
       <!--<ul class="nav-list">-->
         <!--<li class="nav-item">-->
@@ -56,20 +55,42 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import Cookies from 'js-cookie';
   export default {
     data(){
       return{
-        xianshi: true
+        isNotActive: true,
+        isActive:false,
+        userName:''
+      }
+    },
+    mounted(){
+      this.getUserInfo();
+    },
+    methods: {
+      getUserInfo(){
+        this.$axios.post(
+          this.global.baseUrl + '/userInfo'
+        ).then((res) => {
+          // alert(JSON.stringify(res.data));
+          if (res.data.msg == null) {
+            this.userName = res.data.data.userId;
+            this.isNotActive = false;
+            this.isActive = true;
+          }
+        }).catch(function (res) {
+          alert(res);
+        })
+      },
+      logout() {
+        this.$confirm("确认退出吗?", "提示", {
+          type: "warning"
+        }).then(() => {
+            // sessionStorage.removeItem("user");
+            Cookies.remove('token');
+            this.$router.push("/login")
+          }).catch(() => {})
       }
     }
-    // methods: {},
-    // computed: {
-    //   loginName() {
-    //     return this.$store.getters.getLoginName;
-    //   },
-    //   cartList() {
-    //     return this.$store.getters.getCartList;
-    //   }
-    // }
   };
 </script>

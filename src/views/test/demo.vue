@@ -4,15 +4,20 @@
     <el-button type="primary" @click="getUser()">获取用户信息</el-button>
     <el-button type="primary" @click="loadPage('Register')">获取菜单信息</el-button>
     <el-button type="primary" @click="logout()">登出</el-button>
+    <el-button type="primary" @click="getCookie()">cookie</el-button>
   </div>
 </template>
 
 <script>
   // import axios from 'axios'
   // import mock from '@/mock/index.js'
-  import $axios from "../../http/axios";
+  import Cookies from 'js-cookie';
+  // import $axios from "../../http/axios";
   export default {
-    name:'Login',
+    name:'Demo',
+    created(){
+      this.getCoo();
+    },
     methods:{
       getUser(){
         // axios.get('http://localhost:8080/user')
@@ -67,18 +72,33 @@
 
       // }
 
-      logout: function() {
-        this.$confirm("确认退出吗?", "提示", {
-          type: "warning"
-        })
-          .then(() => {
-            sessionStorage.removeItem("user")
-            this.$router.push("/login")
-            this.$api.login.logout().then((res) => {
-            }).catch(function(res) {
-            })
-          })
-          .catch(() => {})
+      // logout: function() {
+      //   this.$confirm("确认退出吗?", "提示", {
+      //     type: "warning"
+      //   })
+      //     .then(() => {
+      //       sessionStorage.removeItem("user");
+      //       Cookies.remove('token');
+      //       this.$router.push("/login")
+      //       this.$api.login.logout().then((res) => {
+      //       }).catch(function(res) {
+      //       })
+      //     })
+      //     .catch(() => {})
+      // },
+      getCookie(){
+        this.$axios.get(
+          this.global.baseUrl+'/cookie'
+        ).then(function (res) {
+          alert(JSON.stringify(res.data));
+        }).catch(function (res) {
+          alert(res);
+        });
+      },
+      getCoo(){
+        let token = Cookies.get('token');
+        Cookies.remove('token');
+        // alert(token)
       }
     }
   }

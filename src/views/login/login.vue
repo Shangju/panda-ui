@@ -69,7 +69,7 @@
             alert(res.data.msg);
           }else {
             // alert(res.data.data.token);
-            Cookies.set('token', res.data.data.token); // 放置token到Cookie
+            Cookies.set('token', res.data.data.token,{expires: 7}); // 放置token到Cookie,保存7天
             sessionStorage.setItem('user', userInfo.username); // 保存用户到本地会话
             self.$router.push('/test'); // 登录成功，跳转到主页
             }

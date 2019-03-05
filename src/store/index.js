@@ -12,6 +12,6 @@ Vue.prototype.$http = axios.create({
 export default new Vuex.Store({
   modules: {
     // user,
-    cart
+    // cart
   }
 });
