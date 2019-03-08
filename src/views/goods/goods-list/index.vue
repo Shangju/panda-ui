@@ -30,7 +30,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import pcGoodsList from '@/components/goods/list';
+  import pcGoodsList from '@/views/img/list';
 
   export default {
     data() {

@@ -17,28 +17,28 @@
   import pcNav from '@/components/layout/nav';
 
   export default {
-    // data() {
-    //   return {
-    //     searchInfo: ''
-    //   };
-    // },
+    data() {
+      return {
+        searchInfo: ''
+      };
+    },
     components: {
       pcNav
+    },
+    methods: {
+      goGoodsListPage(keyword) {
+        let param = {};
+        param.keyword = keyword;
+        console.info(this.$route);
+        if (this.$route.name === 'goodsList') {
+          console.info('emit searchProduct');
+          this.loadPage('goodsList', param);
+          this.$pcBus.$emit('searchProduct');
+        } else {
+          this.loadPage('goodsList', param);
+        }
+      }
     }
-    // methods: {
-    //   goGoodsListPage(keyword) {
-    //     let param = {};
-    //     param.keyword = keyword;
-    //     console.info(this.$route);
-    //     if (this.$route.name === 'goods-list') {
-    //       console.info('emit searchProduct');
-    //       this.loadPage('goods-list', param);
-    //       this.$pcBus.$emit('searchProduct');
-    //     } else {
-    //       this.loadPage('goods-list', param);
-    //     }
-    //   }
-    // }
   };
 </script>
 <style rel="stylesheet/scss" lang="scss">

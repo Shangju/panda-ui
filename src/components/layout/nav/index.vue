@@ -88,7 +88,9 @@
         }).then(() => {
             // sessionStorage.removeItem("user");
             Cookies.remove('token');
-            this.$router.push("/login")
+            // this.$router.push("/login");
+          // window.location.reload();
+          window.location.href = "/";
           }).catch(() => {})
       }
     }

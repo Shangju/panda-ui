@@ -62,7 +62,7 @@
     methods: {
       login() {
         let userInfo = {username:this.loginForm.username, password:this.loginForm.password,captcha:this.loginForm.captcha}
-        let self = this; // 定义一个变量指向vue实例
+        // let self = this; // 定义一个变量指向vue实例
         axios.post(this.global.baseUrl+'/sys/login',userInfo).then(function (res) {
             // alert(JSON.stringify(res.data));
           if(res.data.msg != null){
@@ -71,7 +71,8 @@
             // alert(res.data.data.token);
             Cookies.set('token', res.data.data.token,{expires: 7}); // 放置token到Cookie,保存7天
             sessionStorage.setItem('user', userInfo.username); // 保存用户到本地会话
-            self.$router.push('/test'); // 登录成功，跳转到主页
+            // self.$router.push('/test'); // 登录成功，跳转到主页
+            window.location.href = "/";
             }
           }).catch(function (res) {
           alert(res);

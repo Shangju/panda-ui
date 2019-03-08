@@ -4,10 +4,25 @@ let mixin = {
   },
   methods: {
     // 此方法获取url后面的值
-    getUrlParam(name) {
-      let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)');
-      let result = window.location.search.substr(1).match(reg);
-      return result ? decodeURIComponent(result[2]) : null;
+      getUrlParam(name) {
+      // let reg = new RegExp("(^|\\?|&)"+ name +"=([^&]*)(\\s|&|$)");
+        // console.log(reg);
+        // let result = window.location.search.substr(1).match(reg);
+        // console.log(result);
+        // return result ? decodeURIComponent(result[2]) : null;
+
+        var str=location.href; //取得整个地址栏
+        var num=str.indexOf("?");
+        str=str.substr(num+1); //取得所有参数   stringvar.substr(start [, length ]
+
+        var arr=str.split("&"); //各个参数放到数组里
+        // console.log(arr);
+        for(var i=0;i < arr.length;i++){
+            var result = arr[i].split("=");
+            if(result[0] == name){
+              return decodeURI(result[1]);
+            }
+        }
     },
     // 此方法用来跳转页面
     loadPage(routerName, param) {
@@ -28,7 +43,8 @@ let mixin = {
     },
     //回到主页
     goHome() {
-      this.loadPage('Test');
+      // this.loadPage('/');
+      window.location.href = "/";
     },
     goSignIn() {
       if (process.env.NODE_ENV === 'production') {
@@ -44,45 +60,7 @@ let mixin = {
         window.location.href = 'http://dev-login.paascloud.net/register';
       }
     },
-    ajax(param) {
-      let {type, url, data, success, isUnMusk} = param;
-      if (!isUnMusk) {
-        this.$pcNProgress.start();
-      }
-      this.$http({
-        method: type || 'POST',
-        url: url || '',
-        data: data || ''
-      }).then((res) => {
-        this.$pcNProgress.done();
-        if (success) {
-          success(res);
-        } else {
-          this.goBack();
-        }
-      }).catch((error) => {
-        this.$pcNProgress.done();
-        this.$loading = false;
-        console.error(error);
-      });
-    },
-    // logout() {
-    //   this.$http({
-    //     url: '/uac/user/logout',
-    //     method: 'post',
-    //     params: {
-    //       accessToken: this.$store.getters.getAccessToken
-    //     }
-    //   }).then(() => {
-    //     this.$store.dispatch('delete_user_info');
-    //     this.$store.dispatch('clear_cart');
-    //     this.goHome();
-    //   }).catch(() => {
-    //     this.$store.dispatch('delete_user_info');
-    //     this.$store.dispatch('clear_cart');
-    //     this.goHome();
-    //   });
-    // },
+
     // 字段的验证，支持非空、手机、邮箱的判断
     validate(value, type) {
       // 非空验证

@@ -13,7 +13,6 @@ import VueLazyload from 'vue-lazyload';
 import Mixin from './mixins';
 import 'font-awesome/css/font-awesome.css';
 import Bus from '@/vueBus';
-import Vuex from 'vuex'
 import store from './store';
 // import 'font-awesome/css/font-awesome.css';
 
@@ -22,7 +21,6 @@ import store from './store';
 Vue.use(ElementUI);
 Vue.use(api);
 Vue.use(VueRouter);
-Vue.use(Vuex);
 Vue.use(VueLazyload, {
   loading: 'static/loading-svg/loading-spinning-bubbles.svg',
   try: 3 // default 1

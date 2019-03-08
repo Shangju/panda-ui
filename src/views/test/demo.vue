@@ -96,10 +96,17 @@
         });
       },
       getCoo(){
-        let token = Cookies.get('token');
-        Cookies.remove('token');
+        // let token = Cookies.get('token');
+        // Cookies.remove('token');
         // alert(token)
+         let name = this.getUrlParam("key");
+         alert(name);
       }
+      // getUrlParam(name) {
+      //   let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)');
+      //   let result = window.location.search.substr(1).match(reg);
+      //   return result ? decodeURIComponent(result[2]) : null;
+      // },
     }
   }
 

@@ -5,11 +5,11 @@
       <div class="intro-wrap">
         <div class="p-img-con">
           <div class="main-img-con">
-            <img class="main-img" v-lazy="mainImage" alt="name"/>
+            <img class="main-img" :src="mainImage" alt="name"/>
           </div>
           <ul class="p-img-list">
             <li class="p-img-item" v-for="url in subImages" :key="url">
-              <img @mouseenter="changeMainImg(url)" class="p-img" v-lazy="url"/>
+              <img @mouseenter="changeMainImg(url)" class="p-img" :src="url"/>
             </li>
           </ul>
         </div>
@@ -18,7 +18,7 @@
           <p class="p-subtitle">{{product.subtitle}}</p>
           <div class="p-info-item p-price-con">
             <span class="label">价格:</span>
-            <span class="info">{{product.price | formatMoney}}</span>
+            <span class="info">{{product.price}}</span>
           </div>
           <div class="p-info-item">
             <span class="label">库存:</span>
@@ -60,6 +60,7 @@
       };
     },
     created() {
+      this.loadDetail();
     },
     activated() {
       this.loadDetail();
@@ -99,28 +100,34 @@
         }
       },
       loadDetail() {
-        let productId = this.getUrlParam('productId');
-        if (!productId) {
+        let goodsId = this.getUrlParam('goodsId');
+        if (!goodsId) {
           this.goHome();
           return;
         }
-        this.ajax({
-          type: 'GET',
-          url: `/uac/auth/product/queryProductDetail/` + productId,
-          success: (res) => {
-            if (res.code === 200) {
-              this.product = res.result;
-              this.mainImage = this.product.mainImage;
-              let subImages = this.product.subImages;
-              let array = subImages.split(',');
-              for (let index in array) {
-                this.subImages.push(array[index]);
-              }
-            } else {
-              this.isShowProduct = false;
+        let goodsInfo = {goodsId:goodsId};
+        this.$axios.post(
+          this.global.baseUrl + '/loadDetail',
+          goodsInfo
+        ).then((res) => {
+          // alert(JSON.stringify(res.data));
+          // console.log(this);
+          // this.mainImage = res.data.data.mainImage;
+          if (res.data.code === 200) {
+            this.product = res.data.data;
+            this.mainImage = this.product.mainImage;
+            let subImages = this.product.subImages;
+            let array = subImages.split(',');
+            for (let i = 0 ; i < array.length; i++) {
+              this.subImages.push(array[i]);
             }
+            // alert(this.subImages);
+          } else {
+            this.isShowProduct = false;
           }
-        });
+        }).catch(function (res) {
+          alert(res);
+        })
       }
     },
     components: {}
