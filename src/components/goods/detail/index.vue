@@ -14,11 +14,11 @@
           </ul>
         </div>
         <div class="p-info-con">
-          <h1 class="p-name">{{product.name}}</h1>
-          <p class="p-subtitle">{{product.subtitle}}</p>
+          <h1 class="p-name">{{product.goodsName}}</h1>
+          <p class="p-subtitle">{{product.marketName}}</p>
           <div class="p-info-item p-price-con">
             <span class="label">价格:</span>
-            <span class="info">{{product.price}}</span>
+            <span class="info">{{product.sellPrice}}</span>
           </div>
           <div class="p-info-item">
             <span class="label">库存:</span>
@@ -68,22 +68,28 @@
     },
     methods: {
       addCart() {
-        let userCart = {};
-        console.info('this.product', this.product);
-        let productId = this.product.id;
-        this.$store.dispatch('check_product', {productId});
-        if (this.$store.getters.getCurIndex !== -1) {
-          this.$store.dispatch('plus_count');
-        } else {
-          userCart.productId = this.product.id;
-          userCart.quantity = this.buyCount;
-          userCart.productName = this.product.name;
-          userCart.productPrice = this.product.price;
-          userCart.mainImage = this.product.mainImage;
-          userCart.checked = 1;
-          this.$store.dispatch('push_cart', {userCart});
-        }
-        this.loadPage('oper-result', {'type': 'user-cart'});
+        let userCart = {
+          productId: this.product.goodsId,
+          quantity: this.buyCount,
+          productName: this.product.goodsName,
+          productPrice: this.product.sellPrice,
+          mainImage: this.product.mainImage,
+          checked: true,
+          productStock: this.product.stock
+        };
+        // Cookies.set('userCart',userCart);
+        this.$axios.post(
+          this.global.baseUrl + '/addCart',
+          userCart
+        ).then((res) => {
+          if (res.data.code === 200) {
+            this.loadPage('result', {'type': 'user-cart'});
+          } else {
+            alert(res.data.msg);
+          }
+        }).catch(function (res) {
+          alert(res);
+        })
       },
       changeMainImg(img) {
         this.mainImage = img;
@@ -110,9 +116,6 @@
           this.global.baseUrl + '/loadDetail',
           goodsInfo
         ).then((res) => {
-          // alert(JSON.stringify(res.data));
-          // console.log(this);
-          // this.mainImage = res.data.data.mainImage;
           if (res.data.code === 200) {
             this.product = res.data.data;
             this.mainImage = this.product.mainImage;
@@ -121,7 +124,7 @@
             for (let i = 0 ; i < array.length; i++) {
               this.subImages.push(array[i]);
             }
-            // alert(this.subImages);
+            // alert(this.subImages[2]);
           } else {
             this.isShowProduct = false;
           }

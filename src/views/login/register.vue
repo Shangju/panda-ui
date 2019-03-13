@@ -73,16 +73,10 @@
         let userInfo = {name:this.loginForm.name, password:this.loginForm.password,mobile:this.loginForm.mobile,captcha:this.loginForm.captcha}
         let self = this; // 定义一个变量指向vue实例
         axios.post(this.global.baseUrl+'/sys/register',userInfo).then(function (res) {
-          // alert(JSON.stringify(res.data));
-          // alert(JSON.stringify(res.data));
-          if(res.data.msg != "注册成功"){
-            alert(res.data.msg);
+          if(res.data.code === 200){
+            self.loadPage('result', {'type': 'user-register'});
           }else {
-            // alert(res.data.data.token);
-            // Cookies.set('token', res.data.data.token); // 放置token到Cookie
-            // sessionStorage.setItem('user', userInfo.name); // 保存用户到本地会话
-            alert("注册成功");
-            self.$router.push('/test'); // 注册成功，跳转到主页
+            alert(res.data.msg);
           }
         }).catch(function (res) {
           alert("错误操作");

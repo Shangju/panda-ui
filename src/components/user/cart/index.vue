@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="cart_table" v-show="cartList.length !== 0">
+    <div id="cart_table" v-show="isShowCart">
       <div class="cart-header">
         <table class="cart-table">
           <tr>
@@ -27,22 +27,22 @@
               </label>
             </td>
             <td class="cart-cell cell-img">
-              <a class="link" @click="loadPage('goods-detail', {'productId': cart.productId})">
+              <a class="link" @click="loadPage('goodsDetail', {'goodsId': cart.productId})">
                 <img class="p-img" :src="cart.mainImage" alt="productName"/>
               </a>
             </td>
             <td class="cart-cell cell-info">
-              <a class="link" @click="loadPage('goods-detail', {'productId': cart.productId})">{{cart.productName}}</a>
+              <a class="link" @click="loadPage('goodsDetail', {'goodsId': cart.productId})">{{cart.productName}}</a>
             </td>
-            <td class="cart-cell cell-price">{{cart.productPrice | formatMoney}}</td>
+            <td class="cart-cell cell-price">{{cart.productPrice}}</td>
             <td class="cart-cell cell-count">
-              <span class="count-btn minus" @click="actionCart(cart, 'minus_count')">-</span>
+              <span class="count-btn minus" @click="actionCart(cart.productId, 'minus_count')">-</span>
               <input class="count-input" :value="cart.quantity" data-max="cart.productStock"/>
-              <span class="count-btn plus" @click="actionCart(cart, 'plus_count')">+</span>
+              <span class="count-btn plus" @click="actionCart(cart.productId, 'plus_count')">+</span>
             </td>
-            <td class="cart-cell cell-total">{{cart.productPrice * cart.quantity | formatMoney}}</td>
+            <td class="cart-cell cell-total">{{cart.productPrice * cart.quantity}}</td>
             <td class="cart-cell cell-opera">
-              <span class="link cart-delete" @click="actionCart(cart, 'delete_product')">删除</span>
+              <span class="link cart-delete" @click="actionCart(cart.productId, 'delete_product')">删除</span>
             </td>
           </tr>
         </table>
@@ -61,11 +61,11 @@
                     </span>
         </div>
         <div class="submit-con">
-          <div v-if="cartInfo.totalNum > 0">
-            <span>已选择{{cartInfo.totalNum}}件商品</span>
+          <div v-if="">
+            <span>已选择{{totalNum}}件商品</span>
             <span>总价：</span>
-            <span class="submit-total">{{cartInfo.totalPrice | formatMoney}}</span>
-            <span @click="loadPage('order-confirm')" class="btn btn-submit">去结算</span>
+            <span class="submit-total">{{totalPrice}}</span>
+            <span @click="loadPage('orderConfirm')" class="btn btn-submit">去结算</span>
           </div>
         </div>
       </div>
@@ -80,41 +80,61 @@
   export default {
     data() {
       return {
-        checkedAllFlag: '',
+        isShowCart:true,
+        checkedAllFlag: true,
         userCart: [],
-        selectProductIdArr: []
+        selectProductIdArr: [],
+        cartList:[],
+        totalNum:0,
+        totalPrice:0
       };
     },
     created() {
+      this.getCartInfo();
+      // this.isCheckAll();
     },
     activated() {
-      this.isCheckAll();
+      // this.isCheckAll();
     },
     computed: {
-      cartInfo() {
-        return this.$store.getters.getCartInfo;
-      },
-      cartList() {
-        return this.$store.getters.getCartList;
-      }
+
     },
     filters: {},
     methods: {
-      selectProduct(item) {
-        let productId = item.productId;
-        this.$store.dispatch('check_product', {productId});
-        if (this.$store.getters.getCurIndex !== -1) {
-          console.info(item.checked);
-          if (item.checked) { // checkBox 自动转型
-            this.$store.dispatch('un_select_product', {productId});
+      getCartInfo(){
+        this.$axios.post(
+          this.global.baseUrl + '/getCartInfo',
+        ).then((res) => {
+          if (res.data.code === 200) {
+            // alert(JSON.stringify(res.data));
+            this.cartList = res.data.data;
+            for(let i = 0; i < this.cartList.length; i++){
+              this.totalNum = this.totalNum + this.cartList[i].quantity;
+              this.totalPrice = this.totalPrice + this.cartList[i].productPrice * this.cartList[i].quantity;
+            }
           } else {
-            this.$store.dispatch('select_product', {productId});
+            this.cartList = [];
+            this.isShowCart = false;
           }
-          this.isCheckAll();
+        }).catch(function (res) {
+          alert(res);
+        })
+      },
+      selectProduct(item) {
+        if(item.checked === false){
+          item.checked = true;
+          this.checkedAllFlag = false;
+          this.totalNum = this.totalNum + item.quantity;
+          this.totalPrice = this.totalPrice + item.quantity * item.productPrice;
+        }else {
+          item.checked = false;
+          this.checkedAllFlag = false;
+          this.totalNum = this.totalNum - item.quantity;
+          this.totalPrice = this.totalPrice - item.quantity * item.productPrice;
         }
       },
       isCheckAll() {
-        this.checkedAllFlag = 'checked';
+        this.checkedAllFlag = 1;
         for (let index in this.cartList) {
           let item = this.cartList[index];
           if (typeof item.checked === 'undefined' || item.checked === 0) {
@@ -124,18 +144,23 @@
         }
       },
       selectAll(event) {
-        let checkedAll = event.currentTarget.checked;
-        for (let item of this.cartList) {
-          if (item.checked === checkedAll) {
-            continue;
-          }
-          let productId = item.productId;
-          this.$store.dispatch('check_product', {productId});
-          if (this.$store.getters.getCurIndex !== -1) {
-            if (checkedAll) { // checkBox 自动转型
-              this.$store.dispatch('select_product', {productId});
+        let checkedAll = event.currentTarget.checked;{
+          for (let item of this.cartList) {
+            if (this.checkedAllFlag === true) {
+              item.checked = false;
             } else {
-              this.$store.dispatch('un_select_product', {productId});
+              item.checked = true;
+            }
+          }
+          if(this.checkedAllFlag === true){
+            this.checkedAllFlag = false;
+            this.totalNum = 0;
+            this.totalPrice = 0;
+          }else {
+            this.checkedAllFlag = true;
+            for(let i = 0; i < this.cartList.length; i++){
+              this.totalNum = this.totalNum + this.cartList[i].quantity;
+              this.totalPrice = this.totalPrice + this.cartList[i].productPrice * this.cartList[i].quantity;
             }
           }
         }
@@ -156,19 +181,55 @@
        * @param  {number} index 当前操作的索引
        * @param  {string} type  对应的mutations值[plus_count增加, minus_count 减少, delete_product 删除]
        */
-      actionCart(cart, type) {
-        let index = this.getCartIndex(cart.productId);
-        this.$store.dispatch('update_cur_index', {index});
-        this.$store.dispatch(type);
+      actionCart(productId, type) {
+        // if(type === "minus_count"){
+        //   this.totalNum--;
+        // }else if(type === "plus_count"){
+        //   this.totalNum++;
+        // }
+        let cartInfo = {productId: productId, type: type};
+        this.$axios.post(
+          this.global.baseUrl + '/actionCart',
+          cartInfo
+        ).then((res) => {
+          if (res.data.code === 200) {
+            // alert(JSON.stringify(res.data));
+            this.cartList = res.data.data;
+            this.totalPrice = 0;
+            this.totalNum = 0;
+            for(let i = 0; i < this.cartList.length; i++){
+              this.totalNum = this.totalNum + this.cartList[i].quantity;
+              this.totalPrice = this.totalPrice + this.cartList[i].productPrice * this.cartList[i].quantity;
+            }
+          } else {
+            this.cartList = [];
+            this.isShowCart = false;
+          }
+        }).catch(function (res) {
+          alert(res);
+        })
       },
       deleteSelectProduct() {
-        console.info('this.cartList', this.cartList);
-        for (let item of this.cartList) {
-          console.info(item.productId);
-          if (item.checked || item.checked === 1) {
-            this.actionCart(item, 'delete_product');
+        this.$axios.post(
+          this.global.baseUrl + '/cart/deleteSelectProduct',
+          this.cartList
+        ).then((res) => {
+          if (res.data.code === 200) {
+            // alert(JSON.stringify(res.data));
+            this.cartList = res.data.data;
+            this.totalPrice = 0;
+            this.totalNum = 0;
+            for(let i = 0; i < this.cartList.length; i++){
+              this.totalNum = this.totalNum + this.cartList[i].quantity;
+              this.totalPrice = this.totalPrice + this.cartList[i].productPrice * this.cartList[i].quantity;
+            }
+          } else {
+            this.cartList = [];
+            this.isShowCart = false;
           }
-        }
+        }).catch(function (res) {
+          alert(res);
+        })
       }
     }
   };

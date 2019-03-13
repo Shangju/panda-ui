@@ -25,7 +25,7 @@
         </div>
         <div class="submit-con" v-show="orderItemVoList.length > 0">
           <span>订单总价:</span>
-          <span class="submit-total">{{productTotalPrice | formatMoney }}</span>
+          <span class="submit-total">{{productTotalPrice}}</span>
           <span class="btn order-submit" @click="createOrderDoc">提交订单</span>
         </div>
       </div>
@@ -59,31 +59,8 @@
         this.addressId = addressId;
       },
       queryAddressList() {
-        this.ajax({
-          url: `/omc/shipping/queryUserShippingListWithPage`,
-          data: {
-            pageNum: 1,
-            pageSize: 50
-          },
-          success: (res) => {
-            if (res.code === 200) {
-              this.addressList = res.result.list;
-            }
-          }
-        });
       },
       queryOrderItemVoList() {
-        this.ajax({
-          url: `/omc/order/getOrderCartProduct`,
-          success: (res) => {
-            if (!res || res.code !== 200) {
-              this.loadPage('user-order');
-            } else {
-              this.productTotalPrice = res.result.productTotalPrice;
-              this.orderItemVoList = res.result.orderItemVoList;
-            }
-          }
-        });
       },
       createOrderDoc() {
         if (!this.addressId) {
@@ -98,10 +75,10 @@
               // 清空购物车
               this.$store.dispatch('clear_cart');
               console.info('提交订单 order=', orderVo.orderNo);
-              this.loadPage('order-payment', {'orderNo': orderVo.orderNo});
+              this.loadPage('orderPayment', {'orderNo': orderVo.orderNo});
             } else {
               alert('支付失败');
-              this.loadPage('user-order');
+              this.loadPage('userOrder');
             }
           }
         });

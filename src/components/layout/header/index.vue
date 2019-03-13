@@ -2,7 +2,6 @@
   <div>
     <pc-nav></pc-nav>
     <div class="header">
-      <!--<a class="logo" href="javascript:void(0)" @click="loadPage('Test')" style="width:200px; margin:0 auto;">欢迎来到熊猫海外代购</a>-->
       <div class="w">
         <a class="logo" href="javascript:void(0)" @click.prevent="goHome">PCMall</a>
         <div class="search-con">

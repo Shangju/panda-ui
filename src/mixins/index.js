@@ -47,11 +47,7 @@ let mixin = {
       window.location.href = "/";
     },
     goSignIn() {
-      if (process.env.NODE_ENV === 'production') {
-        window.location.href = 'http://login.paascloud.net';
-      } else {
-        window.location.href = 'http://dev-login.paascloud.net';
-      }
+      this.$router.push('/login')  // 注册成功，跳转到主界面
     },
     goSignUp() {
       if (process.env.NODE_ENV === 'production') {

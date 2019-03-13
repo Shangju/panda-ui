@@ -18,6 +18,7 @@ import about from '@/views/about'
 import userOrder from '@/views/user/user-order'
 import userCenterUpdate from '@/views/user/user-center-update'
 import userPassUpdate from '@/views/user/user-pass-update'
+import result from '@/views/result'
 import Cookies from 'js-cookie'
 
 Vue.use(Router)
@@ -165,6 +166,15 @@ const router = new Router({
         requestAuth: true,
         hideMainHeader: false
       }
+    },{
+      path: '/result',
+      name: 'result',
+      component: result,
+      meta: {
+        name: '操作结果',
+        // requestAuth: true,
+        hideMainHeader: true
+      }
     }
   ]
 })
@@ -191,7 +201,7 @@ router.beforeEach((to, from, next) => {
     } else {
       next();
     }
-  })
+  });
 
 
 export default router

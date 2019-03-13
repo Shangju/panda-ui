@@ -21,7 +21,8 @@
           <!--</a>-->
           <!--</li>-->
           <li class="nav-item">
-            <a class="link" href="javascript:void(0)" @click.prevent="loadPage('userCart')">购物车</a>
+            <a class="link" href="javascript:void(0)" @click.prevent="loadPage('userCart')">
+              <i class="fa fa-shopping-cart"></i>购物车(<span class="cart-count">xx</span>)</a>
           </li>
           <li class="nav-item">
             <a class="link" href="javascript:void(0)" @click.prevent="loadPage('userOrder')">我的订单</a>
@@ -37,8 +38,8 @@
       <!--<ul class="nav-list">-->
         <!--<li class="nav-item">-->
           <!--<a class="link" @click="loadPage('user-cart')">-->
-            <!--<i class="fa fa-shopping-cart"></i>-->
-            <!--购物车(<span class="cart-count">{{cartList.length}}</span>)-->
+            <!--
+            <!--购物车()-->
           <!--</a>-->
         <!--</li>-->
         <!--<li class="nav-item">-->

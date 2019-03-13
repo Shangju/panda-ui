@@ -7,7 +7,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import api from './http/index';
 import VueRouter from 'vue-router';
-import global from '@/utils/global';
+import global from '@/util/global';
 import axios from 'axios';
 import VueLazyload from 'vue-lazyload';
 import Mixin from './mixins';
@@ -33,6 +33,11 @@ Vue.prototype.global = global
 Vue.prototype.$axios = axios;
 Vue.prototype.$pcBus = Bus;
 axios.defaults.withCredentials = true; //意思是携带cookie信息,保持session的一致性
+
+
+Vue.prototype.$http = axios.create({
+  timeout: 60000
+});
 
 /* eslint-disable no-new */
 new Vue({
