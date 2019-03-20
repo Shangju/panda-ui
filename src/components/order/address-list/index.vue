@@ -3,15 +3,15 @@
     <div :class="{'address-item': true, 'active': index === currentAddressIndex}" @click="currentAddressIndex = index"
          data-id="address.id" v-for="(address, index) in  addressList" :key="address.id">
       <div class="address-title">
-        {{address.provinceName}} {{address.cityName}} ({{address.receiverName}} 收)
+        {{address.cityName}} {{address.areaName}} ({{address.userName}} 收)
 
       </div>
       <div class="address-detail">
-        {{address.receiverAddress}} {{address.receiverPhoneNo}}
+        {{address.userAddress}}<br>{{address.userPhone}}
       </div>
       <div class="address-opera">
-        <span class="link address-default" v-if="address.defaultAddress === 0" @click="setDetailAddress(address.id)">设置默认</span>
-        <span class="link address-default" v-if="address.defaultAddress === 1" @click="setDetailAddress(address.id)">默认地址</span>
+        <span class="link address-default" v-if="address.defaultStatus === 0" @click="setDetailAddress(address.addresId)">设置默认</span>
+        <span class="link address-default" v-if="address.defaultStatus === 1" @click="setDetailAddress(address.addresId)">默认地址</span>
         <span class="link address-update" onclick="alert('本功能暂未开放')">编辑</span>
         <span class="link address-delete" onclick="alert('本功能暂未开放')">删除</span>
       </div>
@@ -50,16 +50,16 @@
     methods: {
       setDetailAddress(addressId) {
         for (let address of this.addressList) {
-          if (address.id === addressId) {
-            address.defaultAddress = 1;
+          if (address.addressId === addressId) {
+            address.defaultStatus = 1;
           } else {
-            address.defaultAddress = 0;
+            address.defaultStatus = 0;
           }
         }
       },
       setCurrentAddressIndex() {
         for (let i = 0; i < this.addressList.length; i++) {
-          if (this.addressList[i].defaultAddress) {
+          if (this.addressList[i].defaultStatus) {
             this.currentAddressIndex = i;
           }
         }
@@ -73,7 +73,7 @@
       currentAddressIndex: {
         handler: function (val, oldVal) {
           if (this.addressList[val]) {
-            this.selectAddress(this.addressList[val].id);
+            this.selectAddress(this.addressList[val].addressId);
           }
         }
       }

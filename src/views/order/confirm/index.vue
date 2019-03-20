@@ -31,8 +31,8 @@
       </div>
     </div>
     <div class="modal-wrap">
-
     </div>
+    <div v-html="message">{{message}}</div>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -43,22 +43,24 @@
   export default {
     data() {
       return {
-        addressList: [{
-          provinceName:'',
-          cityName:'',
-          receiverName:''
-        }],
+        // addressList: [{
+        //   provinceName:'',
+        //   cityName:'',
+        //   receiverName:''
+        // }],
+        addressList:[],
         orderItemVoList: [],
         productTotalPrice: 0,
         addressId: '',
         totalNum:0,
-        totalPrice:0
-
+        totalPrice:0,
+        message:''
       };
     },
     created() {
       this.queryAddressList();
       this.queryOrderItemVoList();
+      this.createOrderPay();
     },
     methods: {
       selectAddress(addressId) {
@@ -66,6 +68,18 @@
         this.addressId = addressId;
       },
       queryAddressList() {
+        this.$axios.post(
+          this.global.baseUrl + '/getAddressList',
+        ).then((res) => {
+          if (res.data.code === 200) {
+            console.log(res.data);
+            this.addressList = res.data.data;
+          } else {
+            this.addressList = [];
+          }
+        }).catch(function (res) {
+          alert(res);
+        })
       },
       queryOrderItemVoList() {
         this.$axios.post(
@@ -85,11 +99,36 @@
           alert(res);
         })
       },
+      createOrderPay(){
+        this.$axios.post(
+          this.global.baseUrl+'/createOrderPay'
+        ).then((res) => {
+          this.message = res.data.msg;
+          alert(this.message)
+        }).catch(function (res) {
+          alert(res);
+        });
+      },
       createOrderDoc() {
+        let orderId = this.orderItemVoList[0].orderId;
         if (!this.addressId) {
           alert('请选择发货地址');
           return;
+        }else {
+          // this.loadPage('orderPayment',{'orderId': orderId});
+          document.forms[0].submit();
         }
+
+        let info = {order:this.orderItemVoList[0].orderId}
+        // this.$axios.post(
+        //   this.global.baseUrl + '/payMoney',
+        // ).then((res) => {
+        //   if (res.data.code === 200) {
+        //     this.loadPage('orderPayment', {'orderId': orderId});
+        //   }
+        // }).catch(function (res) {
+        //   alert(res);
+        // })
       }
     },
     components: {

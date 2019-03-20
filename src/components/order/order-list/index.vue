@@ -61,7 +61,6 @@
     },
     methods: {
       toDetailPage(orderId) {
-        // this.$router.push({name: 'orderDetail', query: {orderNo: orderNo}});
         this.loadPage('orderDetail', {'orderId': orderId});
       }
     }

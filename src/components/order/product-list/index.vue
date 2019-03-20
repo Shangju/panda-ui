@@ -15,7 +15,7 @@
           </a>
         </td>
         <td class="cell-info">
-          <a class="link" @click="loadPage('goods-detail', {'goodsId': order.productId})">{{order.productName}}</a>
+          <a class="link" @click="loadPage('goodsDetail', {'goodsId': order.productId})">{{order.productName}}</a>
         </td>
         <td class="cell-price">{{order.productPrice}}</td>
         <td class="cell-count">{{order.quantity}}</td>
