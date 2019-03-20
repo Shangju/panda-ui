@@ -25,8 +25,8 @@
         </div>
         <div class="submit-con" v-show="orderItemVoList.length > 0">
           <span>订单总价:</span>
-          <span class="submit-total">{{productTotalPrice}}</span>
-          <span class="btn order-submit" @click="createOrderDoc">提交订单</span>
+          <span class="submit-total">{{totalPrice}}</span>
+          <span class="btn order-submit" @click="createOrderDoc">前往支付</span>
         </div>
       </div>
     </div>
@@ -43,10 +43,17 @@
   export default {
     data() {
       return {
-        addressList: [],
+        addressList: [{
+          provinceName:'',
+          cityName:'',
+          receiverName:''
+        }],
         orderItemVoList: [],
         productTotalPrice: 0,
-        addressId: ''
+        addressId: '',
+        totalNum:0,
+        totalPrice:0
+
       };
     },
     created() {
@@ -61,27 +68,28 @@
       queryAddressList() {
       },
       queryOrderItemVoList() {
+        this.$axios.post(
+          this.global.baseUrl + '/getOrderGoods',
+        ).then((res) => {
+          if (res.data.code === 200) {
+            // alert(JSON.stringify(res.data));
+            this.orderItemVoList = res.data.data;
+            for(let i = 0; i < this.orderItemVoList.length; i++){
+              this.totalNum = this.totalNum + this.orderItemVoList[i].quantity;
+              this.totalPrice = this.totalPrice + this.orderItemVoList[i].productPrice * this.orderItemVoList[i].quantity;
+            }
+          } else {
+            this.orderItemVoList = [];
+          }
+        }).catch(function (res) {
+          alert(res);
+        })
       },
       createOrderDoc() {
         if (!this.addressId) {
           alert('请选择发货地址');
           return;
         }
-        this.ajax({
-          url: `/omc/order/createOrderDoc/` + this.addressId,
-          success: (res) => {
-            let orderVo = res.result;
-            if (res.code === 200 && orderVo.orderNo) {
-              // 清空购物车
-              this.$store.dispatch('clear_cart');
-              console.info('提交订单 order=', orderVo.orderNo);
-              this.loadPage('orderPayment', {'orderNo': orderVo.orderNo});
-            } else {
-              alert('支付失败');
-              this.loadPage('userOrder');
-            }
-          }
-        });
       }
     },
     components: {

@@ -11,15 +11,15 @@
       <tr v-for="order in orderItemVoList" :key="order.productId">
         <td class="cell-img">
           <a href="detail.html" target="_blank">
-            <img class="p-img" v-lazy="order.productImage" :alt="order.productName"/>
+            <img class="p-img" :src="order.mainImage" :alt="order.productName"/>
           </a>
         </td>
         <td class="cell-info">
-          <a class="link" @click="loadPage('goods-detail', {'productId': order.productId})">{{order.productName}}</a>
+          <a class="link" @click="loadPage('goods-detail', {'goodsId': order.productId})">{{order.productName}}</a>
         </td>
-        <td class="cell-price">{{order.currentUnitPrice | formatMoney}}</td>
+        <td class="cell-price">{{order.productPrice}}</td>
         <td class="cell-count">{{order.quantity}}</td>
-        <td class="cell-total">{{order.totalPrice | formatMoney}}</td>
+        <td class="cell-total">{{order.quantity * order.productPrice}}</td>
       </tr>
     </table>
   </div>

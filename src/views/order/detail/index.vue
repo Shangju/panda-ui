@@ -17,13 +17,13 @@
           <div class="panel-body">
             <div class="order-info">
               <div class="text-line">
-                <span class="text">订单号：{{orderVo.orderNo}}</span>
+                <span class="text">订单号：{{orderVo.orderId}}</span>
                 <span class="text">创建时间：{{orderVo.createTime}}</span>
               </div>
               <div class="text-line">
                                 <span class="text">
                                     收件人：
-                                    {{orderVo.receiverName}}
+                                    {{orderVo.customerName}}
                                   <!--{{orderVo.shippingVo.receiverProvince}}-->
                                   <!--{{orderVo.shippingVo.receiverCity}}-->
                                   <!--{{orderVo.shippingVo.receiverAddress}}-->
@@ -31,7 +31,7 @@
                                 </span>
               </div>
               <div class="text-line">
-                <span class="text">订单状态： {{orderVo.status | getOrderStatusName}}</span>
+                <span class="text">订单状态： {{orderVo.status}}</span>
               </div>
               <div class="text-line">
                 <span class="text">支付方式：{{orderVo.paymentTypeDesc}}</span>
@@ -54,23 +54,23 @@
                 <th class="cell-th cell-count">数量</th>
                 <th class="cell-th cell-total">小计</th>
               </tr>
-              <tr v-for="detail in orderVo.orderItemVoList" :key="detail.id">
+              <tr v-for="detail in orderVo.orderGoods" :key="detail.id">
                 <td class="cell cell-img">
                   <a href="javascript:void(0)" @click="goProductDetailPage(detail.productId)" target="_blank">
-                    <img class="p-img" :src="detail.productImage" :alt="detail.productName"/>
+                    <img class="p-img" :src="detail.mainImage" :alt="detail.productName"/>
                   </a>
                 </td>
                 <td class="cell cell-info">
                   <a class="link" href="javascript:void(0)" @click="goProductDetailPage(detail.productId)" target="_blank">{{detail.productName}}</a>
                 </td>
-                <td class="cell cell-price">{{detail.currentUnitPrice | formatMoney}}</td>
+                <td class="cell cell-price">{{detail.productPrice}}</td>
                 <td class="cell cell-count">{{detail.quantity}}</td>
-                <td class="cell cell-total">{{detail.totalPrice | formatMoney}}</td>
+                <td class="cell cell-total">{{detail.quantity * detail.productPrice}}</td>
               </tr>
             </table>
             <p class="total">
               <span>订单总价：</span>
-              <span class="total-price">{{orderVo.payment | formatMoney}}</span>
+              <span class="total-price">{{totalPrice}}</span>
             </p>
           </div>
         </div>
@@ -84,27 +84,39 @@
   export default {
     data() {
       return {
-        orderVo: {}
+        orderVo: {},
+        totalNum:0,
+        totalPrice:0
       };
     },
     created() {
+      this.queryOrderItemVoList();
     },
     activated() {
-      this.queryOrderItemVoList();
     },
     methods: {
       goProductDetailPage(productId) {
-        this.loadPage('goods-detail', {'productId': productId});
+        this.loadPage('goodsDetail', {'goodsId': productId});
       },
       queryOrderItemVoList() {
-        this.ajax({
-          url: `/omc/order/queryUserOrderDetailList/` + this.$route.query.orderNo,
-          success: (res) => {
-            if (res.code === 200) {
-              this.orderVo = res.result;
+        let orderId = {orderId:this.getUrlParam("orderId")};
+        this.$axios.post(
+          this.global.baseUrl + '/getSingleOrders',
+          orderId
+        ).then((res) => {
+          if (res.data.code === 200) {
+            console.log(res.data);
+            this.orderVo = res.data.data;
+            for (let i = 0; i < this.orderVo.orderGoods.length; i++) {
+              this.totalNum = this.totalNum + this.orderVo.orderGoods[i].quantity;
+              this.totalPrice = this.totalPrice + this.orderVo.orderGoods[i].productPrice * this.orderVo.orderGoods[i].quantity;
             }
+          } else {
+            this.orderVo = [];
           }
-        });
+        }).catch(function (res) {
+          alert(res);
+        })
       },
       cancelOrder(orderNo) {
         if (!orderNo) {

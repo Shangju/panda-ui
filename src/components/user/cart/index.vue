@@ -37,7 +37,7 @@
             <td class="cart-cell cell-price">{{cart.productPrice}}</td>
             <td class="cart-cell cell-count">
               <span class="count-btn minus" @click="actionCart(cart.productId, 'minus_count')">-</span>
-              <input class="count-input" :value="cart.quantity" data-max="cart.productStock"/>
+                <input class="count-input" :value="cart.quantity" data-max="cart.productStock"/>
               <span class="count-btn plus" @click="actionCart(cart.productId, 'plus_count')">+</span>
             </td>
             <td class="cart-cell cell-total">{{cart.productPrice * cart.quantity}}</td>
@@ -65,7 +65,7 @@
             <span>已选择{{totalNum}}件商品</span>
             <span>总价：</span>
             <span class="submit-total">{{totalPrice}}</span>
-            <span @click="loadPage('orderConfirm')" class="btn btn-submit">去结算</span>
+            <span @click="goToSubmit" class="btn btn-submit">提交订单</span>
           </div>
         </div>
       </div>
@@ -103,7 +103,7 @@
     methods: {
       getCartInfo(){
         this.$axios.post(
-          this.global.baseUrl + '/getCartInfo',
+          this.global.baseUrl + '/cart/getCartInfo',
         ).then((res) => {
           if (res.data.code === 200) {
             // alert(JSON.stringify(res.data));
@@ -158,6 +158,8 @@
             this.totalPrice = 0;
           }else {
             this.checkedAllFlag = true;
+            this.totalNum = 0;
+            this.totalPrice = 0;
             for(let i = 0; i < this.cartList.length; i++){
               this.totalNum = this.totalNum + this.cartList[i].quantity;
               this.totalPrice = this.totalPrice + this.cartList[i].productPrice * this.cartList[i].quantity;
@@ -189,7 +191,7 @@
         // }
         let cartInfo = {productId: productId, type: type};
         this.$axios.post(
-          this.global.baseUrl + '/actionCart',
+          this.global.baseUrl + '/cart/actionCart',
           cartInfo
         ).then((res) => {
           if (res.data.code === 200) {
@@ -226,6 +228,18 @@
           } else {
             this.cartList = [];
             this.isShowCart = false;
+          }
+        }).catch(function (res) {
+          alert(res);
+        })
+      },
+      goToSubmit(){
+        this.$axios.post(
+          this.global.baseUrl + '/addOrder',
+          this.cartList
+        ).then((res) => {
+          if (res.data.code === 200) {
+            this.loadPage("orderConfirm");
           }
         }).catch(function (res) {
           alert(res);

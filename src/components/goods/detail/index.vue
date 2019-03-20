@@ -79,7 +79,7 @@
         };
         // Cookies.set('userCart',userCart);
         this.$axios.post(
-          this.global.baseUrl + '/addCart',
+          this.global.baseUrl + '/cart/addCart',
           userCart
         ).then((res) => {
           if (res.data.code === 200) {

@@ -17,30 +17,30 @@
                     <span class="order-text">
                         <span>订单号：</span>
                         <a class="link order-num"
-                           @click="toDetailPage(order.orderNo)">{{order.orderNo}}</a>
+                           @click="toDetailPage(order.orderId)">{{order.orderId}}</a>
                     </span>
             <span class="order-text">{{order.createTime}}</span>
-            <span class="order-text">收件人：{{order.receiverName}}</span>
-            <span class="order-text">订单状态：{{order.status | getOrderStatusName}}</span>
+            <span class="order-text">收件人：{{order.customerName}}</span>
+            <span class="order-text">订单状态：{{order.status}}</span>
             <span class="order-text">
                     <span>订单总价：</span>
-                    <span class="order-total">{{order.payment | formatMoney}}</span>
+                    <span class="order-total">{{order.totalPrice}}</span>
                     </span>
-            <a class="link order-detail" @click="toDetailPage(order.orderNo)">查看详情></a>
+            <a class="link order-detail" @click="toDetailPage(order.orderId)">查看详情></a>
           </td>
         </tr>
-        <tr v-for="detail in order.orderItemVoList" :key="detail.productId">
+        <tr v-for="detail in order.orderGoods" :key="detail.productId">
           <td class="cell cell-img">
-            <a @click="toDetailPage(order.orderNo)" target="_blank">
-              <img class="p-img" :src="detail.productImage" :alt="detail.productName"/>
+            <a @click="toDetailPage(order.orderId)" target="_blank">
+              <img class="p-img" :src="detail.mainImage" :alt="detail.productName"/>
             </a>
           </td>
           <td class="cell cell-info">
-            <a class="link" @click="toDetailPage(order.orderNo)" target="_blank">{{detail.productName}}</a>
+            <a class="link" @click="toDetailPage(order.orderId)" target="_blank">{{detail.productName}}</a>
           </td>
-          <td class="cell cell-price">{{detail.currentUnitPrice | formatMoney}}</td>
+          <td class="cell cell-price">{{detail.productPrice}}</td>
           <td class="cell cell-count">{{detail.quantity}}</td>
-          <td class="cell cell-total">{{detail.totalPrice | formatMoney}}</td>
+          <td class="cell cell-total">{{detail.quantity * detail.productPrice}}</td>
         </tr>
       </div>
     </table>
@@ -60,8 +60,9 @@
       }
     },
     methods: {
-      toDetailPage(orderNo) {
-        this.$router.push({name: 'order-detail', query: {orderNo: orderNo}});
+      toDetailPage(orderId) {
+        // this.$router.push({name: 'orderDetail', query: {orderNo: orderNo}});
+        this.loadPage('orderDetail', {'orderId': orderId});
       }
     }
   };

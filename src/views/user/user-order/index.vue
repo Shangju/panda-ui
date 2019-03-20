@@ -35,28 +35,35 @@
   export default {
     data() {
       return {
-        orderVoList: []
+        orderVoList: [],
+        orderItemVoList:[],
+        totalNum:0,
+        totalPrice:0
       };
     },
     created() {
+      this.queryOrderItemVoList();
     },
     activated() {
-      this.queryOrderItemVoList();
     },
     methods: {
       queryOrderItemVoList() {
-        this.ajax({
-          url: `/omc/order/queryUserOrderListWithPage`,
-          data: {
-            pageNum: 1,
-            pageSize: 10
-          },
-          success: (res) => {
-            if (res.code === 200) {
-              this.orderVoList = res.result.list;
+        this.$axios.post(
+          this.global.baseUrl + '/getOrders',
+        ).then((res) => {
+          if (res.data.code === 200) {
+            // console.log(res.data);
+            this.orderVoList = res.data.data;
+            for(let i = 0; i < this.orderVoList.length; i++){
+              this.totalNum = this.totalNum + this.orderVoList[i].quantity;
+              this.totalPrice = this.totalPrice + this.orderVoList[i].productPrice * this.orderVoList[i].quantity;
             }
+          } else {
+            this.orderVoList = [];
           }
-        });
+        }).catch(function (res) {
+          alert(res);
+        })
       }
     },
     components: {

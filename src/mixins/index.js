@@ -47,7 +47,7 @@ let mixin = {
       window.location.href = "/";
     },
     goSignIn() {
-      this.$router.push('/login')  // 注册成功，跳转到主界面
+      this.$router.push('/login')  // 注册成功，跳转到登录界面
     },
     goSignUp() {
       if (process.env.NODE_ENV === 'production') {
