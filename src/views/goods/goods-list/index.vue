@@ -25,12 +25,16 @@
         <pc-goods-list/>
       </ul>
       <!-- 分页容器 -->
-      <div class="pagination"></div>
+      <div class="pagination">
+        <!--<pc-goods-page/>-->
+      </div>
     </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
   import pcGoodsList from '@/components/goods/list';
+  // import pcGoodsPage from '@/components/goods/page';
+
 
   export default {
     data() {
@@ -72,6 +76,7 @@
     },
     components: {
       pcGoodsList
+      // pcGoodsPage
     }
   };
 </script>

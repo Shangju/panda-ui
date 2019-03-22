@@ -78,6 +78,8 @@
             this.userName = res.data.data.userId;
             this.isNotActive = false;
             this.isActive = true;
+          }else {
+            alert(res.data.msg);
           }
         }).catch(function (res) {
           alert(res);
@@ -87,10 +89,7 @@
         this.$confirm("确认退出吗?", "提示", {
           type: "warning"
         }).then(() => {
-            // sessionStorage.removeItem("user");
-            Cookies.remove('token');
-            // this.$router.push("/login");
-          // window.location.reload();
+          Cookies.remove('token');
           window.location.href = "/";
           }).catch(() => {})
       }

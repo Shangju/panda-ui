@@ -2,13 +2,13 @@
   <el-form :model="loginForm" :rules="fieldRules" ref="loginForm" label-position="left" label-width="0px" class="demo-ruleForm login-container">
     <h3 class="title">用户注册</h3>
     <el-form-item prop="name">
-      <el-input type="text"  v-model="loginForm.name" auto-complete="off" placeholder="请输入用户名"></el-input>
+      <el-input type="text"  v-model="loginForm.adminName" auto-complete="off" placeholder="请输入用户名"></el-input>
     </el-form-item>
     <el-form-item prop="password">
-      <el-input type="password" v-model="loginForm.password"  auto-complete="off" placeholder="请输入密码"></el-input>
+      <el-input type="password" v-model="loginForm.userPassword"  auto-complete="off" placeholder="请输入密码"></el-input>
     </el-form-item>
     <el-form-item prop="mobile">
-      <el-input type="text" v-model="loginForm.mobile" auto-complete="off" placeholder="请输入手机号码"></el-input>
+      <el-input type="text" v-model="loginForm.userPhone" auto-complete="off" placeholder="请输入手机号码"></el-input>
     </el-form-item>
     <el-form-item >
       <el-col :span="12">
@@ -34,17 +34,15 @@
 </template>
 
 <script>
-  import Cookies from "js-cookie";
-  import axios from 'axios';
   export default {
     name: 'Login',
     data() {
       return {
         logining: false,
         loginForm: {
-          name: '',
-          password: '',
-          mobile:'',
+          adminName: '',
+          userPassword: '',
+          userPhone:'',
           captcha:'',
           src:this.global.baseUrl + "/captcha.jpg"
         },
@@ -70,18 +68,24 @@
         this.loginForm.src = this.global.baseUrl + "/captcha.jpg?t=" + new Date().getTime();
       },
       reset() {
-        let userInfo = {name:this.loginForm.name, password:this.loginForm.password,mobile:this.loginForm.mobile,captcha:this.loginForm.captcha}
-        let self = this; // 定义一个变量指向vue实例
-        axios.post(this.global.baseUrl+'/sys/register',userInfo).then(function (res) {
+        let userInfo = {
+          adminName: this.loginForm.adminName,
+          userPassword: this.loginForm.userPassword,
+          userPhone: this.loginForm.userPhone,
+          captcha: this.loginForm.captcha
+        };
+        // 定义一个变量指向vue实例
+        let self = this;
+        this.$axios.post(this.global.baseUrl+'/sys/register',userInfo).then(function (res) {
           if(res.data.code === 200){
+            //跳向注册成功界面
             self.loadPage('result', {'type': 'user-register'});
           }else {
             alert(res.data.msg);
           }
         }).catch(function (res) {
-          alert("错误操作");
+          alert("系统内部异常，请联系管理员");
         });
-        // this.$router.push('/')  // 注册成功，跳转到主界面
       }
     }
   }

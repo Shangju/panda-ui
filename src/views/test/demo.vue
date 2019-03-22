@@ -1,114 +1,24 @@
+// footer组件
 <template>
-  <div class="page">
-    <h2>Home Page</h2>
-    <el-button type="primary" @click="getUser()">获取用户信息</el-button>
-    <el-button type="primary" @click="loadPage('Register')">获取菜单信息</el-button>
-    <el-button type="primary" @click="logout()">登出</el-button>
-    <el-button type="primary" @click="getCookie()">cookie</el-button>
+  <div>
+    <div @click="send()">dsad</div>
   </div>
 </template>
-
 <script>
-  // import axios from 'axios'
-  // import mock from '@/mock/index.js'
-  import Cookies from 'js-cookie';
-  // import $axios from "../../http/axios";
   export default {
-    name:'Demo',
-    created(){
-      this.getCoo();
-    },
-    methods:{
-      getUser(){
-        // axios.get('http://localhost:8080/user')
-        //   .then(function (res) {
-        //     alert(JSON.stringify(res.data));
-        //   }).catch(function (res) {
-        //   alert(res);
-        // });
-        // axios({
-        //     url: this.global.baseURL + '/findAll',
-        //     methods:'GET',
-        //   }
-        // ).then(function (res) {
-        //     alert(JSON.stringify(res.data));
-        //   }).catch(function (res) {
-        //   alert(res);
-        // });
-
-        // axios.get(this.global.baseUrl+'/findAll')
-        //   .then(function (res) {
-        //   alert(JSON.stringify(res.data));
-        // }).catch(function (res) {
-        //   alert(res);
-        // });
-
-        this.$axios.post(
-          this.global.baseUrl+'/findAll'
-        ).then(function (res) {
-            alert(JSON.stringify(res.data));
-            // console.log(res.data[1].password);
-          }).catch(function (res) {
-          alert(res);
-        });
-      },
-      getMenu(){
-        axios.get('http://localhost:8080/menu')
-          .then(function (res) {
-            alert(JSON.stringify(res.data));
-          }).catch(function (res) {
-          alert(res);
-        });
-      },
-      // layout(){
-        // this.$axios.get(
-        //   this.global.baseUrl+'/sys/logout'
-        // ).then(function (res) {
-        //   alert(JSON.stringify(res.data));
-        //   // console.log(res.data[1].password);
-        // }).catch(function (res) {
-        //   alert(res);
-        // });
-
-      // }
-
-      // logout: function() {
-      //   this.$confirm("确认退出吗?", "提示", {
-      //     type: "warning"
-      //   })
-      //     .then(() => {
-      //       sessionStorage.removeItem("user");
-      //       Cookies.remove('token');
-      //       this.$router.push("/login")
-      //       this.$api.login.logout().then((res) => {
-      //       }).catch(function(res) {
-      //       })
-      //     })
-      //     .catch(() => {})
-      // },
-      getCookie(){
-        this.$axios.get(
-          this.global.baseUrl+'/cookie'
-        ).then(function (res) {
-          alert(JSON.stringify(res.data));
-        }).catch(function (res) {
-          alert(res);
-        });
-      },
-      getCoo(){
-        // let token = Cookies.get('token');
-        // Cookies.remove('token');
-        // alert(token)
-         let name = this.getUrlParam("key");
-         alert(name);
+    name: 'HelloWorld',
+    data () {
+      return {
+        userName:null,
+        newTodoText:''
       }
-      // getUrlParam(name) {
-      //   let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)');
-      //   let result = window.location.search.substr(1).match(reg);
-      //   return result ? decodeURIComponent(result[2]) : null;
-      // },
+    },
+    methods: {
+      send () {
+        this.newTodoText = 'hello world'
+        this.$pcBus.emit('add-todo', this.newTodoText );
+
+      },
     }
   }
-
 </script>
-

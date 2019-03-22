@@ -2,22 +2,24 @@
   <div class="user-info">
     <el-form :label-position="labelPosition" label-width="100px" :model="updateUserForm">
       <el-form-item label="用户编号">
-        <el-input v-model="updateUserForm.customerId" class="form-line-input" :disabled="true"/>
+        <el-input v-model="updateUserForm.userId" class="form-line-input" :disabled="true"/>
       </el-form-item>
       <el-form-item label="登录名">
-        <el-input v-model="updateUserForm.admin" class="form-line-input" :disabled="true"/>
+        <el-input v-model="updateUserForm.adminName" class="form-line-input" :disabled="true"/>
       </el-form-item>
       <el-form-item label="真实姓名">
-        <el-input v-model="updateUserForm.customerName" class="form-line-input"/>
+        <el-input v-model="updateUserForm.userName" class="form-line-input"/>
       </el-form-item>
       <el-form-item label="身份证号">
-        <el-input v-model="updateUserForm.customerNumber" class="form-line-input"/>
+        <el-input v-model="updateUserForm.userNum" class="form-line-input"/>
       </el-form-item>
       <el-form-item label="手机号码">
-        <el-input v-model="updateUserForm.customerPhone" class="form-line-input"/>
+        <el-input v-model="updateUserForm.userPhone" class="form-line-input"/>
       </el-form-item>
       <el-form-item label="收货地址">
-        <el-input v-model="updateUserForm.customerAddress" class="form-line-input"/>
+        <el-input v-model="updateUserForm.cityName" placeholder="一级地址，如：重庆，北京"  class="form-line-input"/>
+        <el-input v-model="updateUserForm.areaName" placeholder="二级地址，如：南岸，北碚"  class="form-line-input"/>
+        <el-input v-model="updateUserForm.userAddress" placeholder="详细收货地址" class="form-line-input"/>
       </el-form-item>
 
     </el-form>
@@ -32,12 +34,14 @@
         errMsg: '',
         labelPosition: 'right',
         updateUserForm: {
-          customerId: '',
-          admin:'',
-          customerName: '',
-          customerNumber: '',
-          customerPhone: '',
-          customerAddress:''
+          userId:'',
+          adminName:'',
+          userName:'',
+          userNum:'',
+          userPhone:'',
+          userAddress:'',
+          cityName:'',
+          areaName:''
         }
       };
     },
@@ -47,22 +51,27 @@
     methods: {
       updateUserInfo() {
         let userInfo = {
-          customerId: this.updateUserForm.customerId, adminName: this.updateUserForm.admin,
-          customerName: this.updateUserForm.customerName, customerNumber: this.updateUserForm.customerNumber,
-          customerPhone: this.updateUserForm.customerPhone, customerAddress: this.updateUserForm.customerAddress
+          userId: this.updateUserForm.userId, adminName: this.updateUserForm.adminName,
+          userName: this.updateUserForm.userName, userNum: this.updateUserForm.userNum,
+          userPhone: this.updateUserForm.userPhone, userAddress: this.updateUserForm.userAddress
+        };
+        let addressInfo = {
+          userId: this.updateUserForm.userId ,userName:this.updateUserForm.userName,
+          cityName: this.updateUserForm.cityName,areaName:this.updateUserForm.areaName,
+          userAddress: this.updateUserForm.userAddress
         };
         this.$axios.post(
           this.global.baseUrl + '/updateUserInfo',
           userInfo
         ).then((res) => {
           // alert(JSON.stringify(res.data));
-            this.updateUserForm.customerId = res.data.data.customerId;
-            this.updateUserForm.admin = res.data.data.adminName;
-            this.updateUserForm.customerName = res.data.data.customerName;
-            this.updateUserForm.customerNumber = res.data.data.customerNumber;
-            this.updateUserForm.customerPhone = res.data.data.customerPhone;
-            this.updateUserForm.customerAddress = res.data.data.customerAddress;
-            if(res.data.code == 200) {
+            if(res.data.code === 200) {
+              this.updateUserForm.userId = res.data.data.userId;
+              this.updateUserForm.adminName = res.data.data.adminName;
+              this.updateUserForm.userName = res.data.data.userName;
+              this.updateUserForm.userNum = res.data.data.userNum;
+              this.updateUserForm.userPhone = res.data.data.userPhone;
+              this.updateUserForm.userAddress = res.data.data.userAddress;
               alert("资料更新成功");
             }
         }).catch(function (res) {
@@ -74,17 +83,13 @@
           this.global.baseUrl + '/getUserInfo'
         ).then((res) => {
           // alert(JSON.stringify(res.data));
-          if (res.data.msg != null) {
-            this.updateUserForm.customerId = res.data.data.userId;
-            this.updateUserForm.admin = res.data.data.name;
-            this.updateUserForm.customerPhone = res.data.data.mobile;
-          }else {
-            this.updateUserForm.customerId = res.data.data.customerId;
-            this.updateUserForm.admin = res.data.data.adminName;
-            this.updateUserForm.customerName = res.data.data.customerName;
-            this.updateUserForm.customerNumber = res.data.data.customerNumber;
-            this.updateUserForm.customerPhone = res.data.data.customerPhone;
-            this.updateUserForm.customerAddress = res.data.data.customerAddress;
+          if (res.data.code === 200) {
+            this.updateUserForm.userId = res.data.data.userId;
+            this.updateUserForm.adminName = res.data.data.adminName;
+            this.updateUserForm.userName = res.data.data.userName;
+            this.updateUserForm.userNum = res.data.data.userNum;
+            this.updateUserForm.userPhone = res.data.data.userPhone;
+            this.updateUserForm.userAddress = res.data.data.userAddress;
           }
         }).catch(function (res) {
           alert(res);

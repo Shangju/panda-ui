@@ -52,7 +52,7 @@
           this.global.baseUrl + '/getOrders',
         ).then((res) => {
           if (res.data.code === 200) {
-            // console.log(res.data);
+            console.log(res.data);
             this.orderVoList = res.data.data;
             for(let i = 0; i < this.orderVoList.length; i++){
               this.totalNum = this.totalNum + this.orderVoList[i].quantity;

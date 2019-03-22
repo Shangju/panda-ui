@@ -2,27 +2,27 @@
   <div class="user-info">
     <div class="form-line">
       <span class="label">用户编号：</span>
-      <span class="text">{{customerId}}</span>
+      <span class="text">{{userId}}</span>
     </div>
     <div class="form-line">
       <span class="label">登录名：</span>
-      <span class="text">{{admin}}</span>
+      <span class="text">{{adminName}}</span>
     </div>
     <div class="form-line">
       <span class="label">真实姓名：</span>
-      <span class="text">{{customerName}}</span>
+      <span class="text">{{userName}}</span>
     </div>
     <div class="form-line">
       <span class="label">身份证号：</span>
-      <span class="text">{{customerNumber}}</span>
+      <span class="text">{{userNum}}</span>
     </div>
     <div class="form-line">
       <span class="label">手机号码：</span>
-      <span class="text">{{customerPhone}}</span>
+      <span class="text">{{userPhone}}</span>
     </div>
     <div class="form-line">
       <span class="label">收货地址：</span>
-      <span class="text">{{customerAddress}}</span>
+      <span class="text">{{userAddress}}</span>
     </div>
     <a class="btn btn-submit" @click="loadPage('userCenterUpdate')">编辑</a>
   </div>
@@ -31,12 +31,12 @@
   export default {
     data() {
       return {
-          customerId:'',
-          admin:'',
-          customerName:'',
-          customerNumber:'',
-          customerPhone:'',
-          customerAddress:''
+          userId:'',
+          adminName:'',
+          userName:'',
+          userNum:'',
+          userPhone:'',
+          userAddress:''
       };
     },
     created() {
@@ -48,17 +48,13 @@
           this.global.baseUrl + '/getUserInfo'
         ).then((res) => {
           // alert(JSON.stringify(res.data));
-          if (res.data.msg != null) {
-            this.customerId = res.data.data.userId;
-            this.admin = res.data.data.name;
-            this.customerPhone = res.data.data.mobile;
-          }else {
-            this.customerId = res.data.data.customerId;
-            this.admin = res.data.data.adminName;
-            this.customerName = res.data.data.customerName;
-            this.customerNumber = res.data.data.customerNumber;
-            this.customerPhone = res.data.data.customerPhone;
-            this.customerAddress = res.data.data.customerAddress;
+          if(res.data.code === 200){
+            this.userId = res.data.data.userId;
+            this.adminName = res.data.data.adminName;
+            this.userName = res.data.data.userName;
+            this.userNum = res.data.data.userNum;
+            this.userPhone = res.data.data.userPhone;
+            this.userAddress = res.data.data.userAddress;
           }
         }).catch(function (res) {
           alert(res);

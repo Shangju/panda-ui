@@ -12,7 +12,7 @@ import axios from 'axios';
 import VueLazyload from 'vue-lazyload';
 import Mixin from './mixins';
 import 'font-awesome/css/font-awesome.css';
-import Bus from '@/vueBus';
+import Bus from './vueBus';
 import store from './store';
 // import 'font-awesome/css/font-awesome.css';
 
@@ -20,6 +20,7 @@ import store from './store';
 
 Vue.use(ElementUI);
 Vue.use(api);
+Vue.use(Bus);
 Vue.use(VueRouter);
 Vue.use(VueLazyload, {
   loading: 'static/loading-svg/loading-spinning-bubbles.svg',
@@ -27,12 +28,13 @@ Vue.use(VueLazyload, {
 });
 Vue.mixin(Mixin);
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 Vue.prototype.global = global
 Vue.prototype.$axios = axios;
 Vue.prototype.$pcBus = Bus;
-axios.defaults.withCredentials = true; //意思是携带cookie信息,保持session的一致性
+//意思是携带cookie信息,保持session的一致性
+axios.defaults.withCredentials = true;
 
 
 Vue.prototype.$http = axios.create({

@@ -19,8 +19,8 @@
                         <a class="link order-num"
                            @click="toDetailPage(order.orderId)">{{order.orderId}}</a>
                     </span>
-            <span class="order-text">{{order.createTime}}</span>
-            <span class="order-text">收件人：{{order.customerName}}</span>
+            <span class="order-text">{{renderTime(order.createTime)}}</span>
+            <span class="order-text">收件人：{{order.userName}}</span>
             <span class="order-text">订单状态：{{order.status}}</span>
             <span class="order-text">
                     <span>订单总价：</span>
@@ -62,6 +62,10 @@
     methods: {
       toDetailPage(orderId) {
         this.loadPage('orderDetail', {'orderId': orderId});
+      },
+      renderTime(date) {
+        let dateee = new Date(date).toJSON();
+        return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
       }
     }
   };

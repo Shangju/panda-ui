@@ -62,6 +62,11 @@
         </div>
         <div class="submit-con">
           <div v-if="">
+            <span>请选择运输方式：</span>
+            <select>
+              <option value ="volvo">空运</option>
+              <option value ="saab">海运</option>
+            </select>
             <span>已选择{{totalNum}}件商品</span>
             <span>总价：</span>
             <span class="submit-total">{{totalPrice}}</span>

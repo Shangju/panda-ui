@@ -104,7 +104,7 @@
           this.global.baseUrl+'/createOrderPay'
         ).then((res) => {
           this.message = res.data.msg;
-          alert(this.message)
+          // alert(this.message)
         }).catch(function (res) {
           alert(res);
         });

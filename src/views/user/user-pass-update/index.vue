@@ -57,15 +57,14 @@
           passwordNew: this.passwordNew,
           passwordConfirm: this.passwordConfirm
         };
-        let self = this; // 定义一个变量指向vue实例
         this.$axios.post(
           this.global.baseUrl + '/updatePassword',
           password
         ).then((res) => {
           alert(res.data.msg);
-          if(res.data.msg == "密码修改成功，请重新登录。"){
+          if(res.data.code === 200){
             Cookies.remove("token");
-            self.$router.push('/test'); // 登录成功，跳转到主页
+            window.location.href = "/";
           }
         }).catch(function (res) {
           alert(res);

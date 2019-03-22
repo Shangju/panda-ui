@@ -28,9 +28,8 @@
       goGoodsListPage(keyword) {
         let param = {};
         param.keyword = keyword;
-        console.info(this.$route);
+        param.categoryId = 0;
         if (this.$route.name === 'goodsList') {
-          console.info('emit searchProduct');
           this.loadPage('goodsList', param);
           this.$pcBus.$emit('searchProduct');
         } else {

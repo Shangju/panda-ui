@@ -2,10 +2,10 @@
   <el-form :model="loginForm" :rules="fieldRules" ref="loginForm" label-position="left" label-width="0px" class="demo-ruleForm login-container">
     <h1 class="title">系统登录</h1>
     <el-form-item prop="username">
-      <el-input type="text" v-model="loginForm.username" auto-complete="off" placeholder="账号"></el-input>
+      <el-input type="text" v-model="loginForm.adminName" auto-complete="off" placeholder="账号"></el-input>
     </el-form-item>
     <el-form-item prop="password">
-      <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="密码"></el-input>
+      <el-input type="password" v-model="loginForm.userPassword" auto-complete="off" placeholder="密码"></el-input>
     </el-form-item>
     <el-form-item >
       <el-col :span="12">
@@ -40,16 +40,16 @@
       return {
         logining: false,
         loginForm: {
-          username: 'string',
-          password: 'string',
+          adminName: 'string',
+          userPassword: 'string',
           captcha:'',
           src:this.global.baseUrl + "/captcha.jpg"
         },
         fieldRules: {
-          username: [
+          adminName: [
             { required: true, message: '请输入账号', trigger: 'blur' },
           ],
-          password: [
+          userPassword: [
             { required: true, message: '请输入密码', trigger: 'blur' },
           ],
           captcha:[
@@ -61,17 +61,18 @@
     },
     methods: {
       login() {
-        let userInfo = {username:this.loginForm.username, password:this.loginForm.password,captcha:this.loginForm.captcha}
+        let userInfo = {adminName:this.loginForm.adminName, userPassword:this.loginForm.userPassword,captcha:this.loginForm.captcha}
         // let self = this; // 定义一个变量指向vue实例
-        axios.post(this.global.baseUrl+'/sys/login',userInfo).then(function (res) {
-            // alert(JSON.stringify(res.data));
+        this.$axios.post(this.global.baseUrl+'/sys/login',userInfo).then(function (res) {
           if(res.data.msg != null){
             alert(res.data.msg);
           }else {
             // alert(res.data.data.token);
-            Cookies.set('token', res.data.data.token,{expires: 7}); // 放置token到Cookie,保存7天
-            sessionStorage.setItem('user', userInfo.username); // 保存用户到本地会话
-            // self.$router.push('/test'); // 登录成功，跳转到主页
+            // 放置token到Cookie,保存7天
+            Cookies.set('token', res.data.data.token,{expires: 7});
+            // 保存用户到本地会话
+            sessionStorage.setItem('user', userInfo.username);
+            // 登录成功，跳转到主页
             window.location.href = "/";
             }
           }).catch(function (res) {
