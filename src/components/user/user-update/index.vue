@@ -17,8 +17,8 @@
         <el-input v-model="updateUserForm.userPhone" class="form-line-input"/>
       </el-form-item>
       <el-form-item label="收货地址">
-        <el-input v-model="updateUserForm.cityName" placeholder="一级地址，如：重庆，北京"  class="form-line-input"/>
-        <el-input v-model="updateUserForm.areaName" placeholder="二级地址，如：南岸，北碚"  class="form-line-input"/>
+        <el-input v-model="updateUserForm.cityName" placeholder="城市如：重庆，北京"  class="form-line-input"/>
+        <el-input v-model="updateUserForm.areaName" placeholder="市区如：南岸，北碚"  class="form-line-input"/>
         <el-input v-model="updateUserForm.userAddress" placeholder="详细收货地址" class="form-line-input"/>
       </el-form-item>
 
@@ -53,12 +53,13 @@
         let userInfo = {
           userId: this.updateUserForm.userId, adminName: this.updateUserForm.adminName,
           userName: this.updateUserForm.userName, userNum: this.updateUserForm.userNum,
-          userPhone: this.updateUserForm.userPhone, userAddress: this.updateUserForm.userAddress
+          userPhone: this.updateUserForm.userPhone, userAddress: this.updateUserForm.userAddress,
+          cityName: this.updateUserForm.cityName,areaName:this.updateUserForm.areaName,
         };
         let addressInfo = {
           userId: this.updateUserForm.userId ,userName:this.updateUserForm.userName,
           cityName: this.updateUserForm.cityName,areaName:this.updateUserForm.areaName,
-          userAddress: this.updateUserForm.userAddress
+          userAddress: this.updateUserForm.userAddress,userPhone: this.updateUserForm.userPhone,
         };
         this.$axios.post(
           this.global.baseUrl + '/updateUserInfo',
@@ -71,7 +72,19 @@
               this.updateUserForm.userName = res.data.data.userName;
               this.updateUserForm.userNum = res.data.data.userNum;
               this.updateUserForm.userPhone = res.data.data.userPhone;
-              this.updateUserForm.userAddress = res.data.data.userAddress;
+              // this.updateUserForm.userAddress = res.data.data.userAddress;
+              this.$axios.post(
+                this.global.baseUrl + '/updateAddress',
+                addressInfo
+              ).then((res) => {
+                // alert(JSON.stringify(res.data));
+                if(res.data.code === 200) {
+                  // this.updateUserForm.areaName = res.data.data.areaName;
+                  // this.updateUserForm.cityName = res.data.data.cityName;
+                }
+              }).catch(function (res) {
+                alert(res);
+              });
               alert("资料更新成功");
             }
         }).catch(function (res) {
@@ -89,7 +102,13 @@
             this.updateUserForm.userName = res.data.data.userName;
             this.updateUserForm.userNum = res.data.data.userNum;
             this.updateUserForm.userPhone = res.data.data.userPhone;
-            this.updateUserForm.userAddress = res.data.data.userAddress;
+            //将字符串分为数组存储，以空格隔开
+            let arr = new Array();
+            arr = res.data.data.userAddress.split(" ");
+            this.updateUserForm.cityName = arr[0];
+            this.updateUserForm.areaName = arr[1];
+            this.updateUserForm.userAddress = arr[2];
+
           }
         }).catch(function (res) {
           alert(res);

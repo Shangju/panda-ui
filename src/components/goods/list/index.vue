@@ -7,7 +7,7 @@
         </a>
       </div>
       <div class="p-price-con">
-        <span class="p-price">￥{{product.sellPrice}}</span>
+        <span class="p-price">{{product.sellPrice | formatMoney}}</span>
       </div>
       <div class="p-name-con">
         <a class="p-name" @click="goProductDetailPage(product.goodsId)">{{product.goodsName}}</a>

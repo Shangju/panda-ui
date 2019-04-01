@@ -14,6 +14,7 @@ import Mixin from './mixins';
 import 'font-awesome/css/font-awesome.css';
 import Bus from './vueBus';
 import store from './store';
+import filters from './filters';
 // import 'font-awesome/css/font-awesome.css';
 
 
@@ -37,9 +38,9 @@ Vue.prototype.$pcBus = Bus;
 axios.defaults.withCredentials = true;
 
 
-Vue.prototype.$http = axios.create({
-  timeout: 60000
-});
+
+Object.keys(filters).forEach(k => Vue.filter(k, filters[k]));
+
 
 /* eslint-disable no-new */
 new Vue({

@@ -16,9 +16,17 @@
         <div class="p-info-con">
           <h1 class="p-name">{{product.goodsName}}</h1>
           <p class="p-subtitle">{{product.marketName}}</p>
+          <!--<div class="p-info-item p-price-con">-->
+            <!--<span class="labelBig">采购价格：</span>-->
+            <!--<span class="info">{{product.purchasePrice}}</span>-->
+          <!--</div>-->
           <div class="p-info-item p-price-con">
-            <span class="label">价格:</span>
-            <span class="info">{{product.sellPrice}}</span>
+            <span class="labelBig">出售价格：</span>
+            <span class="info">{{product.sellPrice | formatMoney}}</span>
+          </div>
+          <div class="p-info-item p-price-con">
+            <span class="labelBig">商品描述：</span>
+            <span class="info">{{product.goodsIntroduce}}</span>
           </div>
           <div class="p-info-item">
             <span class="label">库存:</span>

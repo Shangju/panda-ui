@@ -24,6 +24,8 @@
           <pc-product-list :orderItemVoList="orderItemVoList"/>
         </div>
         <div class="submit-con" v-show="orderItemVoList.length > 0">
+          <span>运输方式:</span>
+          <span class="submit-total">{{shipType}}</span>
           <span>订单总价:</span>
           <span class="submit-total">{{totalPrice}}</span>
           <span class="btn order-submit" @click="createOrderDoc">前往支付</span>
@@ -54,7 +56,8 @@
         addressId: '',
         totalNum:0,
         totalPrice:0,
-        message:''
+        message:'',
+        shipType:''
       };
     },
     created() {
@@ -87,10 +90,11 @@
         ).then((res) => {
           if (res.data.code === 200) {
             // alert(JSON.stringify(res.data));
-            this.orderItemVoList = res.data.data;
+            console.log(res.data);
+            this.orderItemVoList = res.data.data.orderGoods;
             for(let i = 0; i < this.orderItemVoList.length; i++){
-              this.totalNum = this.totalNum + this.orderItemVoList[i].quantity;
-              this.totalPrice = this.totalPrice + this.orderItemVoList[i].productPrice * this.orderItemVoList[i].quantity;
+              this.totalPrice = res.data.data.totalPrice;
+              this.shipType = res.data.data.orderType;
             }
           } else {
             this.orderItemVoList = [];

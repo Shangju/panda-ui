@@ -62,6 +62,12 @@
     width: 50px;
     color: #999;
 }
+.intro-wrap .p-info-con .p-info-item .labelBig{
+  display: inline-block;
+  width: 80px;
+  color: #999;
+}
+
 /* 价格部分 */
 .intro-wrap .p-info-con .p-price-con{
     background: #eee;

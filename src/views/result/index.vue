@@ -24,7 +24,7 @@
         </div>
       </div>
       <div class="result-con default-success" v-show="showDefaultSuccess">
-        <h1 class="result-title">恭喜您，操作成功！</h1>
+        <h1 class="result-title">很遗憾，支付失败，您可以重新下单</h1>
         <div class="result-content">
           <a class="link" href="javascript:void(0)" @click.prevent="goHome">回到首页</a>
         </div>

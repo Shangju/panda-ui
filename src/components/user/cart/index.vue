@@ -34,13 +34,13 @@
             <td class="cart-cell cell-info">
               <a class="link" @click="loadPage('goodsDetail', {'goodsId': cart.productId})">{{cart.productName}}</a>
             </td>
-            <td class="cart-cell cell-price">{{cart.productPrice}}</td>
+            <td class="cart-cell cell-price">{{cart.productPrice | formatMoney}}</td>
             <td class="cart-cell cell-count">
               <span class="count-btn minus" @click="actionCart(cart.productId, 'minus_count')">-</span>
-                <input class="count-input" :value="cart.quantity" data-max="cart.productStock"/>
+                <input class="count-input" :value="cart.quantity" readonly=""/>
               <span class="count-btn plus" @click="actionCart(cart.productId, 'plus_count')">+</span>
             </td>
-            <td class="cart-cell cell-total">{{cart.productPrice * cart.quantity}}</td>
+            <td class="cart-cell cell-total">{{cart.productPrice * cart.quantity | formatMoney}}</td>
             <td class="cart-cell cell-opera">
               <span class="link cart-delete" @click="actionCart(cart.productId, 'delete_product')">删除</span>
             </td>
@@ -63,13 +63,14 @@
         <div class="submit-con">
           <div v-if="">
             <span>请选择运输方式：</span>
-            <select>
-              <option value ="volvo">空运</option>
-              <option value ="saab">海运</option>
+            <select v-model="selected">
+              <option :value="item.price" v-for="(item,index) in shipType">{{item.characters}}</option>
             </select>
             <span>已选择{{totalNum}}件商品</span>
+            <span>运费：</span>
+            <span class="submit-total">{{selected}}</span>
             <span>总价：</span>
-            <span class="submit-total">{{totalPrice}}</span>
+            <span class="submit-total">{{totalPrice + selected | formatMoney}}</span>
             <span @click="goToSubmit" class="btn btn-submit">提交订单</span>
           </div>
         </div>
@@ -91,15 +92,24 @@
         selectProductIdArr: [],
         cartList:[],
         totalNum:0,
-        totalPrice:0
+        totalPrice:0,
+        shipType:[
+        {
+          price:100,
+          characters:"空运"
+        },
+        {
+          price:50,
+          characters:"海运"
+        }
+        ],
+        selected:0
       };
     },
     created() {
       this.getCartInfo();
-      // this.isCheckAll();
     },
     activated() {
-      // this.isCheckAll();
     },
     computed: {
 
@@ -239,11 +249,24 @@
         })
       },
       goToSubmit(){
+        if(this.selected === 0){
+          alert("请选择运输方式！");
+          return;
+        }
         this.$axios.post(
           this.global.baseUrl + '/addOrder',
           this.cartList
         ).then((res) => {
           if (res.data.code === 200) {
+            let param = {shipType:this.selected};
+            this.$axios.post(
+              this.global.baseUrl + '/addOrderType',
+              param
+            ).then((res) =>{
+
+            }).catch(function (res){
+              alert(res);
+            })
             this.loadPage("orderConfirm");
           }
         }).catch(function (res) {
